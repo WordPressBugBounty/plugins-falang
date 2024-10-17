@@ -30,6 +30,7 @@ class Languages extends \WP_List_Table {
  * Displays the item information in a column ( default case )
  *
  * @since 1.0
+ * @update 1.3.56 remove count(Post) Columm
  *
  * @param object $item
  * @param string $column_name
@@ -40,10 +41,6 @@ class Languages extends \WP_List_Table {
 			case 'locale':
 			case 'slug':
 				return esc_html( $item->$column_name );
-
-			case 'count':
-				return (int) $item->$column_name;
-
 			default:
 				return $item->$column_name; // flag
 		}
@@ -191,6 +188,7 @@ class Languages extends \WP_List_Table {
 	 *
 	 * @since 0.1
      * @update 1.3.51 change _x by __ to allow translation
+     * @update 1.3.56 remove Post/count column
 	 *
 	 * @return array the list of column titles
 	 */
@@ -203,7 +201,6 @@ class Languages extends \WP_List_Table {
 			'locale'       => __( 'Locale', 'falang' ),
 			'slug'         => __( 'Code', 'falang' ),
 			'default_language' => __( 'Default', 'falang'),
-			'count'        => __( 'Posts', 'falang' ),
 			'action'       => __( 'Action', 'falang' )
 		);
 	}
@@ -223,6 +220,7 @@ class Languages extends \WP_List_Table {
 	 * Prepares the list of items for displaying
 	 *
 	 * @since 0.1
+     * @update 1.3.56 clean code
 	 *
 	 * @param array $data
 	 */
@@ -230,18 +228,7 @@ class Languages extends \WP_List_Table {
 		$per_page = $this->get_items_per_page('falang_lang_per_page');
 		$this->_column_headers = array( $this->get_columns(), array(), $this->get_sortable_columns() );
 
-		//usort( $data, array( $this, 'usort_reorder' ) );
-
-		$total_items = count( $data );
 		$this->items = array_slice( $data, ( $this->get_pagenum() - 1 ) * $per_page, $per_page );
-
-//		$this->set_pagination_args(
-//			array(
-//				'total_items' => $total_items,
-//				'per_page'    => $per_page,
-//				'total_pages' => ceil( $total_items / $per_page ),
-//			)
-//		);
 	}
 
 

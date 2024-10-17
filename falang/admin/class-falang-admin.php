@@ -89,6 +89,7 @@ class Falang_Admin extends Falang_Rewrite
      * @update 1.3.45 add term_link filter
      * @update 1.3.49 remove yandex filter
      *                add generic filter for service translation (use first in Elementor)
+     * @update 1.3.56 wp_nav_menu_item_custom_fields signature change
      * */
     public function load()
     {
@@ -218,7 +219,8 @@ class Falang_Admin extends Falang_Rewrite
         add_action('wp_ajax_falang_display_static', array($this, 'ajax_falang_display_static'));
 
         //add menu link for translation in menu
-        add_filter( 'wp_nav_menu_item_custom_fields',   array( $this, 'wp_nav_menu_item_custom_fields'), 10, 5);
+        //only 2 used and fix bug with < 5.4 call with 4 paramater
+        add_filter( 'wp_nav_menu_item_custom_fields',   array( $this, 'wp_nav_menu_item_custom_fields'), 10, 2);
 
         //category view in backen need to be translated to remove the %category-slug% or %product_cat% in wc...
         add_filter('term_link', array($this, 'translate_term_link'), 10, 3);
@@ -1773,12 +1775,11 @@ class Falang_Admin extends Falang_Rewrite
 
     /*
 	 * since 1.3.3 add $post_id and $local parameter
+     * @update 1.3.56 clean code
 	 * */
     public function display_edit_post_page($post_id, $locale)
     {
-//		$post_id                = intval($_GET['post_id']);
         $post = get_post($post_id);
-//		$target_language_locale = sanitize_html_class($_GET['language']);//local in the url
         $falang_post = new \Falang\Core\Post($post_id);
         $translated_metakeys = $falang_post->get_post_type_metakeys($post->post_type);
 
@@ -3021,9 +3022,10 @@ class Falang_Admin extends Falang_Rewrite
      * not for Falang language switcher
      *
      * @from 1.3.36
+     * @update 1.3.56 use only 2 parameters change def to fix bug before 5.4 with only 4 parameters
      *
      */
-    public function wp_nav_menu_item_custom_fields( $item_id, $menu_item, $depth, $args, $current_object_id ) {
+    public function wp_nav_menu_item_custom_fields( $item_id, $menu_item ) {
         if (isset($menu_item->post_name) && $menu_item->post_name == 'langues' ){return;}
 
         $admin_links = new \Falang\Core\Admin_Links();

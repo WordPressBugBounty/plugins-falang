@@ -16,6 +16,9 @@
  * This class defines all code necessary to run during the plugin's activation.
  *
  * @since      1.0
+ *
+ * @update 1.3.56 fix message display on multisite or polylang activated
+ *
  * @package    Falang
  * @subpackage Falang/includes
  * @author     Stéphane Bouey <stephane.bouey@faboba.com>
@@ -25,6 +28,8 @@ class Falang_Activator {
 
 	/**
 	 * @since    1.0
+     * @update 1.3.56 fix error message with wp_die
+     *                allow installation with Polylang installed
 	 */
 	public static function activate() {
 		global $wp_version;
@@ -37,46 +42,22 @@ class Falang_Activator {
 
 		//no multisiste
 		if ( is_multisite()) {
-			die(
-			sprintf(
-				'<p style = "font-family: sans-serif; font-size: 12px; color: #333; margin: -5px">%s</p>',
-				esc_html__('Falang cannot be installed on a multisite system', 'falang' )
-			)
+            wp_die(
+                sprintf(
+                    __('Falang cannot be installed on a multisite system, <a href="%s">Go back to installed plugins</a>', 'falang' ),
+                    self_admin_url( 'plugins.php' )
+                )
 			);
 		}
 
 		//no polylang
 		if (  is_plugin_active(self::POLYLANG)) {
-			die(
-			sprintf(
-				'<p style = "font-family: sans-serif; font-size: 12px; color: #333; margin: -5px">%s</p>',
-				esc_html__('Falang cannot be installed with Polylang on the same site', 'falang' )
-			)
-			);
-		}
-
-
-		if ( version_compare( $wp_version, FALANG_MIN_WP_VERSION, '<' ) ) {
-			die(
-			sprintf(
-				'<p style = "font-family: sans-serif; font-size: 12px; color: #333; margin: -5px">%s</p>',
-				sprintf(
-				/* translators: %1$s and %2$s are WordPress version numbers */
-					esc_html__( 'You are using WordPress %1$s. Falang requires at least WordPress %2$s.', 'falang' ),
-					esc_html( $wp_version ),
-					FALANG_MIN_WP_VERSION
-				)
-			)
-			);
-		}
-
-		if (self::is_polylang_installed()) {
-			die(
-			sprintf(
-				'<p style="font-family:sans-serif;font-size: 13px;color: #333; margin: -5px">%s</p>',
-				__('Falang cannot be installed now, because Polylang has not been completely removed. Falang and Polylang use the languages in taxonomies and cannot exist together on the same installation. See the Polylang documentation to remove it completely <a href="https://polylang.pro/doc/how-to-uninstall-polylang/" target="blank">here</a>. After that, you can install Falang again.', 'falang' )
-			)
-			);
+            wp_die(
+                sprintf(
+                    __('Falang cannot be activated with Polylang activated on the same site, <a href="%s">Go back to installed plugins</a>', 'falang' ),
+                    self_admin_url( 'plugins.php' )
+                )
+            );
 		}
 
 		//create default options for the fist activation
@@ -148,6 +129,8 @@ class Falang_Activator {
     *
     * @update 1.3.55 fix error during term creation rtl is an int
     *                add default order
+     * @update 1.3.56 fix when polylang is/was installed on the site
+     *               add published
     * */
     public static function add_default_language(){
         $falang_model = new \Falang\Model\Falang_Model();
@@ -163,18 +146,26 @@ class Falang_Activator {
             'order' => 1
         );
 
-        //$falang_model->add_language($languages['en_US']);//don't work here
-
-        // First add the language taxonomy
         $description = serialize(array('locale' => $args['locale'], 'rtl' => (int)$args['rtl'], 'flag_code' => empty($args['flag']) ? '' : $args['flag'],'order' => (int)$args['order']));
-        $r = wp_insert_term($args['name'], 'language', array('slug' => $args['slug'], 'description' => $description));
-        if (is_wp_error($r)) {
-            die(
-            sprintf(
-                '<p style = "font-family: sans-serif; font-size: 12px; color: #333; margin: -5px">%s</p>',
-                esc_html__('Impossible to init default en_US language', 'falang')
-            )
-            );
+
+        $default_term_language = get_term_by('name',$args['name'],'language');
+
+        //default case (polylang or other not installed before using taxonomy
+        if (empty($default_term_language)){
+            // First add the language taxonomy
+            $r = wp_insert_term($args['name'], 'language', array('slug' => $args['slug'], 'description' => $description));
+            if (is_wp_error($r)) {
+                wp_die(
+                    sprintf(
+                        '<p style = "font-family: sans-serif; font-size: 12px; color: #333; margin: -5px">%s</p>',
+                        esc_html__('Impossible to init default en_US language', 'falang')
+                    )
+                );
+           }
+        } else {
+                //probably a polylang term language installed before
+                $r = (array) $default_term_language;
+                wp_update_term($r['term_id'],'language',array('slug' => $args['slug'], 'description' => $description));
         }
 
         // The term_language taxonomy
@@ -193,15 +184,6 @@ class Falang_Activator {
         //set default to en_US
 		$falang_model->update_default_lang('en_US');
 
-	}
-
-	public static function is_polylang_installed (){
-		$polylang = get_option('polylang');
-		if ($polylang){
-			return true;
-		} else {
-			return false;
-		}
 	}
 
 }

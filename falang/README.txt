@@ -5,7 +5,7 @@ Tags: multilingual, translation, translate, bilingual, localization
 Requires at least: 4.7
 Tested up to: 6.6
 Requires PHP: 5.6
-Stable tag: 1.3.55
+Stable tag: 1.3.56
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -106,9 +106,11 @@ Purchased licenses come with 1 year on-site support.
 
 == Changelog ==
 
-* 1.3.55 (2024/09/18)
-* fix first activation error message displayed
-* change param order of setTranslation
+* 1.3.56 (2024/10/16)
+* fix activation message
+* fix wp_nav_menu_item_custom_fields filter
+* fix Falang work with Polylang not completly removed
+* remove post column in Language list
 
 == Known issues ==
 * The WooCommerce attribute slug doesn't have to be translated

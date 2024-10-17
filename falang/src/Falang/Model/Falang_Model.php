@@ -43,6 +43,9 @@ class Falang_Model {
 	 * args hide_default
 	 * args hide_empty
 	 * @since 1.0
+	 *
+	 * @update 1.3.56 get only language make by Falang (skip polylang language)
+	 *
 	 * TODO Cache list the full and filter on it
 	 * TODO BUG possible if the first call filter by hide_default
 	 */
@@ -74,16 +77,26 @@ class Falang_Model {
 			$this->term_languages = get_terms( 'term_language', array( 'hide_empty' => false ) );
 		}
 		$term_languages = $this->term_languages;
+
 		$term_languages = empty( $term_languages ) || is_wp_error( $term_languages ) ?
 			array() : array_combine( wp_list_pluck( $term_languages, 'slug' ), $term_languages );
+
 		if ( ! empty( $languages ) && ! empty( $term_languages ) ) {
 			// Don't use array_map + create_function to instantiate an autoloaded class as it breaks badly in old versions of PHP
 			foreach ( $languages as $k => $v ) {
-//                if ($hide_default && ($v->slug == $default_slug) ){
-//	                unset($languages[$k]);
- //               } else {
-	                $languages[ $k ] = new \Falang\Core\Language( $v, $term_languages[ 'falang_' . $v->slug ] );
- //               }
+
+                //set only language from Falang
+                if (isset($term_languages[ 'falang_' . $v->slug ])) {
+                    $languages[ $k ] = new \Falang\Core\Language( $v, $term_languages[ 'falang_' . $v->slug ] );
+                    continue;
+                }
+
+                //skip polylang language definition
+                if (isset($term_languages[ 'pll_' . $v->slug ])){
+                    unset($languages[$k]);
+                    continue;
+                }
+
 			}
 
 			$languages = apply_filters( 'falang_languages_list', $languages, $this );
@@ -105,6 +118,7 @@ class Falang_Model {
 					}
 				}
 			}
+
 			return $lg;
 		}
 
@@ -222,12 +236,21 @@ class Falang_Model {
 
 		// First add the language taxonomy
 		$description = serialize( array( 'locale' => $args['locale'], 'rtl' => (int) $args['rtl'], 'flag_code' => empty( $args['flag'] ) ? '' : $args['flag'], 'order' => empty( $args['order'] ) ? '' : $args['order'] ) );
-		$r = wp_insert_term( $args['name'], 'language', array( 'slug' => $args['slug'], 'description' => $description ) );
-		if ( is_wp_error( $r ) ) {
-			// Avoid an ugly fatal error if something went wrong ( reported once in the forum )
-			add_settings_error( 'general', 'falang_add_language', __( 'Impossible to add the language', 'falang' ) );
-			return false;
-		}
+
+        //check if the term exist (ex:  previous from Polylang)
+        $term_language = get_term_by('name',$args['name'],'language');
+        if(empty($term_language)){
+            $r = wp_insert_term( $args['name'], 'language', array( 'slug' => $args['slug'], 'description' => $description ) );
+            if ( is_wp_error( $r ) ) {
+                // Avoid an ugly fatal error if something went wrong ( reported once in the forum )
+                add_settings_error( 'general', 'falang_add_language', __( 'Impossible to add the language', 'falang' ) );
+                return false;
+            }
+        } else {
+            //probably a polylang term language
+            $r = (array) $term_language;
+            wp_update_term($r['term_id'],'language',array('slug' => $args['slug'], 'description' => $description));
+        }
 
 		// The term_language taxonomy
 		// Don't want shared terms so use a different slug
@@ -798,7 +821,7 @@ class Falang_Model {
 	 * @param mixed $default. Default value if option does not exist
 	 * @return mixed
 	 *
-	 * @from 1.4.7
+	 * @from 1.0
 	 */
 	public function get_option($option_name, $default = false) {
 		if (isset($this->options[$option_name])) {
