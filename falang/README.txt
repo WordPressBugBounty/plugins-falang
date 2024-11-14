@@ -3,9 +3,9 @@ Contributors: sbouey
 Donate link: www.faboba.com/falangw/
 Tags: multilingual, translation, translate, bilingual, localization
 Requires at least: 4.7
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 5.6
-Stable tag: 1.3.56
+Stable tag: 1.3.57
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -106,11 +106,12 @@ Purchased licenses come with 1 year on-site support.
 
 == Changelog ==
 
-* 1.3.56 (2024/10/16)
-* fix activation message
-* fix wp_nav_menu_item_custom_fields filter
-* fix Falang work with Polylang not completly removed
-* remove post column in Language list
+* 1.3.57 (2024/11/14)
+* fix Yoast title template translation (fix by Stamatios Aronis)
+* Switch on the same search query
+* add Rest API link filter
+* return only Falang Languages in get_languages_list
+* WordPress 6.7 compatible
 
 == Known issues ==
 * The WooCommerce attribute slug doesn't have to be translated

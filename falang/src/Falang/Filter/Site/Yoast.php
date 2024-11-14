@@ -111,6 +111,10 @@ class Yoast {
         return $this->translate_description($description, $presentation,array('_yoast_wpseo_opengraph-description','_yoast_wpseo_metadesc','post_excerpt'));
     }
 
+    /*
+     * @update 1.3.57
+     * fix from Stamatios Aronis
+     * */
     private function translate_title($title,$presentation,array $optionNames) {
         if(Falang()->is_default()) return $title;
         $object_type = $presentation->model->object_type;
@@ -142,7 +146,7 @@ class Yoast {
                     }
                 }
 
-                $title = wpseo_replace_vars( $title, $presentation );
+                $title = wpseo_replace_vars( $presentation->title, array( "post_title" => $title ) );
 
             }
         }

@@ -129,6 +129,7 @@ class Language_Switcher {
      * @since 1.0
      * @since 1.3.20 fix notice on admin display widget
      * @since 1.3.24 add association link
+     * @since 1.3.57 switch on same search query
      *
      * @param array $items menu items
      * @return array modified items
@@ -190,6 +191,12 @@ class Language_Switcher {
 			if (is_front_page()){
 				$link['href'] = $this->get_home_url($language);
 			}
+
+            //allow switch on same search query
+            if (is_search()){
+                $url =  $this->get_home_url($language);
+                $link['href'] = $url . '?s='.get_search_query();
+            }
 
 			$links[] = $link;
 

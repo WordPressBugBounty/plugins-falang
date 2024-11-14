@@ -45,6 +45,7 @@ class Falang_Model {
 	 * @since 1.0
 	 *
 	 * @update 1.3.56 get only language make by Falang (skip polylang language)
+	 * @update 1.3.57 return only Falang\Core\Language
 	 *
 	 * TODO Cache list the full and filter on it
 	 * TODO BUG possible if the first call filter by hide_default
@@ -104,6 +105,13 @@ class Falang_Model {
 			$languages = array(); // In case something went wrong
 		}
 
+        //remove language not Falang language class
+        //pll_de, pll_en, falang_en
+        foreach ($languages as $i => $language){
+            if (!is_a($language,"Falang\Core\Language",true )){
+                unset($languages[$i]);
+            }
+        }
         //order $languages by order
         usort($languages, array($this, "cmp"));
 

@@ -184,7 +184,8 @@ class Falang_Public extends Falang_Rewrite{
 
 	/**
 	 * @from 1.0
-     * @from 1.3.13 call parent init to load WP Strings translation
+     * @update 1.3.13 call parent init to load WP Strings translation
+     * @update 1.3.57 add action rest_api_init
 	 */
 	public function init() {
 
@@ -198,6 +199,9 @@ class Falang_Public extends Falang_Rewrite{
 
 		//link filters only after request has been parsed
 		add_action('parse_request', array($this, 'add_links_translation_filters'));
+
+        // link filter on rest request because 'parse_request' is not triggered
+        add_action('rest_api_init', array($this, 'add_links_translation_filters'));
 
 		// login
 		add_filter('login_url', array($this, 'translate_login_url'));
