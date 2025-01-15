@@ -129,9 +129,13 @@ if ($falang_model->get_option('enable_service')){
                         <h2><?php echo $falang_post->get_keyname_from_field($key); ?></h2>
 
                         <div class="col-source">
-                            <!-- put original value in a div for the copy -->
+                            <!-- put original value in a div for the copy not if the supported builder is set (fix element pack bug with form)-->
                             <div id="original_value_<?php echo $key;?>" name="original_value_<?php echo $key;?>" style="display:none" >
-                                <?php echo $original_post->{$key}; ?>
+                                <?php
+                                    if (false == $supported_builder) {
+                                        echo $original_post->{$key};
+                                    }
+                                ?>
                             </div>
                             <!-- with wp_editor like post_content hide the orignal value (translate/copy problem encoding) -->
                             <?php if ($key == 'post_content') { ?>
@@ -186,7 +190,7 @@ if ($falang_model->get_option('enable_service')){
                                         echo wp_editor(isset($previous_value[0]) ? $previous_value[0] : '', $key, $editor_settings_dest);
                                     } else {
                                         // not displaying source for extra Falang builder
-                                        echo sprintf(esc_html__( 'To translate the content, you need to use the additional %1$s Falang plugin', 'falang' ), $supported_builder);
+                                        echo str_replace('\n','<br/>',sprintf(esc_html__( 'To translate the content, you need to use the additional %1$s Falang plugin\nIn this case the translations are done directly in the builder', 'falang' ), $supported_builder));
                                     }
 			                    ?>
 		                    <?php } elseif ($key == 'post_excerpt')  { ?>

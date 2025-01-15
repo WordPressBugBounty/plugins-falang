@@ -87,6 +87,7 @@ class Falang_Activator {
 	 *
 	 * @since 1.0
      * @update 1.3.54 add deepl
+     * @update 1.3.58 add nav_men_item meta_keys _menu_item_url checked by default
 	 *
 	 * return array
 	 */
@@ -95,7 +96,7 @@ class Falang_Activator {
 			'post_type' => array(
 				'post' => array('translatable' => true),
 				'page' => array('translatable' => true),
-				'nav_menu_item' => array('translatable' => true)
+				'nav_menu_item' => array('translatable' => true,'meta_keys' => array('0' => '_menu_item_url'))
 			),
 			'taxonomy' => array(
 				'category' => array('translatable' => true),

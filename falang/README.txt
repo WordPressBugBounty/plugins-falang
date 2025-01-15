@@ -5,7 +5,7 @@ Tags: multilingual, translation, translate, bilingual, localization
 Requires at least: 4.7
 Tested up to: 6.7
 Requires PHP: 5.6
-Stable tag: 1.3.57
+Stable tag: 1.3.58
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -106,12 +106,10 @@ Purchased licenses come with 1 year on-site support.
 
 == Changelog ==
 
-* 1.3.57 (2024/11/14)
-* fix Yoast title template translation (fix by Stamatios Aronis)
-* Switch on the same search query
-* add Rest API link filter
-* return only Falang Languages in get_languages_list
-* WordPress 6.7 compatible
+* 1.3.58 (2025/01/15)
+* change message when the post translation is done in a builder
+* don't display original content with extra builder (fix element pack bug with simple form)
+* add during install the Navigation Menu item option : _menu_item_url checked
 
 == Known issues ==
 * The WooCommerce attribute slug doesn't have to be translated

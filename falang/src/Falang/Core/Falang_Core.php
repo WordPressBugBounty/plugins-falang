@@ -93,6 +93,7 @@ class Falang_Core {
 
 		$this->model = new Falang_Model();
 
+        //need to be put in init see https://borbot.net/
         $GLOBALS['l10n_unloaded']['falang_string'] = true; // Short-circuit _load_textdomain_just_in_time() for 'falang_string' domain in WP 4.6+
 
     }
