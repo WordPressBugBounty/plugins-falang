@@ -175,26 +175,26 @@ $classes_string = (is_array($classes)) ? implode(' ', $classes) : $classes;
                         <input type="text" name="fake_original_value_<?php echo $key;?>" id="fake_original_value_<?php echo $key;?>" readonly value="<?php echo esc_attr($orginal_post_title); ?>" class="falang">
                     </div><!-- col-source -->
 					<div class="col-action">
-                        <button class="button-secondary button-copy" onclick="copyToTranslation('<?php echo $key;?>','copy');return false;" title="<?php  echo __( 'Copy', 'falang' ) ?>"><i class="fas fa-copy"></i></button>
+                        <button class="button-secondary button-copy" onclick="copyToTranslation('<?php echo $key;?>','copy');return false;" title="<?php  echo __( 'Copy', 'falang' ) ?>"><i class="icon-copy"></i></button>
                         <!-- add yandex/azure button -->
                         <?php if ($falang_model->get_option('enable_service') == '1') { ?>
                             <?php if ($falang_model->get_option('service_name') == 'deepl') { ?>
-                                <button class="button-secondary button-copy" onclick="copyToTranslation('<?php echo $key;?>','translate');return false;" title="<?php  echo __( 'Translate with DeepL', 'falang' ) ?>"><i class="fas fa-globe"></i></button>
+                                <button class="button-secondary button-copy" onclick="copyToTranslation('<?php echo $key;?>','translate');return false;" title="<?php  echo __( 'Translate with DeepL', 'falang' ) ?>"><i class="icon-globe"></i></button>
                             <?php } ?>
                             <?php if ($falang_model->get_option('service_name') == 'google') { ?>
-                                <button class="button-secondary button-copy" onclick="copyToTranslation('<?php echo $key;?>','translate');return false;" title="<?php  echo __( 'Translate with Google', 'falang' ) ?>"><i class="fab fa-google"></i></button>
+                                <button class="button-secondary button-copy" onclick="copyToTranslation('<?php echo $key;?>','translate');return false;" title="<?php  echo __( 'Translate with Google', 'falang' ) ?>"><i class="icon-google"></i></button>
                             <?php } ?>
                             <?php if ($falang_model->get_option('service_name') == 'yandex') { ?>
-                                <button class="button-secondary button-copy" onclick="copyToTranslation('<?php echo $key;?>','translate');return false;" title="<?php  echo __( 'Translate with Yandex', 'falang' ) ?>"><i class="fab fa-yandex-international"></i></button>
+                                <button class="button-secondary button-copy" onclick="copyToTranslation('<?php echo $key;?>','translate');return false;" title="<?php  echo __( 'Translate with Yandex', 'falang' ) ?>"><i class="icon-yandex"></i></button>
                             <?php } ?>
                             <?php if ($falang_model->get_option('service_name') == 'azure') { ?>
-                                <button class="button-secondary button-copy" onclick="copyToTranslation('<?php echo $key;?>','translate');return false;" title="<?php  echo __( 'Translate with Azure', 'falang' ) ?>"><i class="fab fa-windows"></i></button>
+                                <button class="button-secondary button-copy" onclick="copyToTranslation('<?php echo $key;?>','translate');return false;" title="<?php  echo __( 'Translate with Azure', 'falang' ) ?>"><i class="icon-windows"></i></button>
                             <?php } ?>
                             <?php if ($falang_model->get_option('service_name') == 'lingvanex') { ?>
-                                <button class="button-secondary button-copy" onclick="copyToTranslation('<?php echo $key;?>','translate');return false;" title="<?php  echo __( 'Translate with Lingvanex', 'falang' ) ?>"><i class="fas fa-globe"></i></button>
+                                <button class="button-secondary button-copy" onclick="copyToTranslation('<?php echo $key;?>','translate');return false;" title="<?php  echo __( 'Translate with Lingvanex', 'falang' ) ?>"><i class="icon-globe"></i></button>
                             <?php } ?>
                         <?php } else { ?>
-                            <button class="button-secondary button-copy" disabled title="<?php  echo __( 'No Translate Service enabled', 'falang' ) ?>"><i class="fas fa-language"></i></button>
+                            <button class="button-secondary button-copy" disabled title="<?php  echo __( 'No Translate Service enabled', 'falang' ) ?>"><i class="icon-language"></i></button>
                         <?php }  ?>
 					</div><!-- col-action -->
                     <div class="col-target">

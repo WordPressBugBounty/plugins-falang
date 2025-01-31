@@ -47,6 +47,9 @@ class TranslatorDefault {
 	   self::$languageCodeInISO += [$key => $value];
     }
 
+    /*
+     * @udpate 1.3.59 language code for finish fi
+     * */
 	static public $languageCodeInISO = array (
         'af-za' => 'AF',	// Afrikaans
         'sq-al' => 'AL', 	// Albanian
@@ -73,7 +76,7 @@ class TranslatorDefault {
         'en-us' => 'EN', 	// English US
         'eo-xx' => 'EO', 	// Esperanto
         'et-ee' => 'ET', 	// Estonian
-        'fi-fi' => 'FI', 	// Finnish
+        'fi' => 'FI', 	// Finnish
         'nl-be' => 'NL', 	// Flemish
         'fr-fr' => 'FR', 	// French
         // 'fr-CA' => '',		// French Canadian only fr-ca/bing

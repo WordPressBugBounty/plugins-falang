@@ -19,13 +19,12 @@ function translateService(fieldName,sourceText){
             jQuery('body').addClass('waiting');
         },
         success: function (result) {
-            data = JSON.parse(result.data);
             if (result.success) {
                 console.log(result);
-                translatedText = data.translations[0].text;
+                translatedText = result.data;
                 setTranslation(fieldName,translatedText);
             } else {
-                console.log('Error : '+ data);
+                console.log('Error : '+ result);
                 translatedText = '--error--';
             }
         },

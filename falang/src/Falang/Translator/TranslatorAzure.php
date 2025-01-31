@@ -31,6 +31,9 @@ class TranslatorAzure extends TranslatorDefault {
     {
         parent::installScripts($from,$to);
 
+        $from = $this->languageCodeToISO($from);
+        $to   = $this->languageCodeToISO($to);
+
         $inline_script = "var translator = {'from' : '".strtolower($from). "','to' : '".strtolower($to). "'};\n";
         $inline_script .= "var azureKey = '".$this->token."';\n";
         wp_add_inline_script('translatorService',$inline_script,'before');

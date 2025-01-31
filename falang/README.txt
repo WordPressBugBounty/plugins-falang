@@ -5,7 +5,7 @@ Tags: multilingual, translation, translate, bilingual, localization
 Requires at least: 4.7
 Tested up to: 6.7
 Requires PHP: 5.6
-Stable tag: 1.3.58
+Stable tag: 1.3.59
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -105,6 +105,15 @@ Purchased licenses come with 1 year on-site support.
 3. The Language Listing panel
 
 == Changelog ==
+
+* 1.3.59 (2025/01/30)
+* fix bug in falangw shortcode use to display the switcher (thanks to Frank Sundgaard Nielsen)
+* fix copy/translate button with supported builder (elementor/divi...)
+* fix suoni language translation with translate service
+* fix deepl translation on elementor text widget
+* fix hreflang when they are overrided by the filter falang_hreflang
+* remove font awesome / use fontello font only
+* fix load_textdomain warning
 
 * 1.3.58 (2025/01/15)
 * change message when the post translation is done in a builder

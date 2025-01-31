@@ -234,6 +234,7 @@ class Falang_Admin extends Falang_Rewrite
      * Register the stylesheets for the admin area.
      *
      * @since    1.0.0
+     * @update 1.3.59 remove font awesome use fontello
      */
     public function enqueue_styles()
     {
@@ -252,8 +253,6 @@ class Falang_Admin extends Falang_Rewrite
 
         wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/falang-admin.css', array(), $this->version, 'all');
         wp_enqueue_style('select2', plugin_dir_url(__FILE__) . 'css/select2.min.css', array(), '4.0.11', 'all');
-        //font awesome
-        wp_enqueue_style('fontawesome5154', plugin_dir_url(__FILE__) . 'css/all.min.css', array(), '5.15.4', 'all');
 
         //add resizable css for string translation
         wp_enqueue_style('wp-jquery-ui-dialog');

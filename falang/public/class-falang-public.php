@@ -103,6 +103,7 @@ class Falang_Public extends Falang_Rewrite{
      * @since 1.3.13 move WP_Strings translation
      * @since 1.3.33 add get_term_metadata filter
      * @since 1.3.35 add theme editor workaround here
+     * @update 1.3.59 move the load_strings_translations to init
 	 */
 	public function load() {
         //theme_editor don't like falang with home slug - disable falang for theme editor check
@@ -113,8 +114,6 @@ class Falang_Public extends Falang_Rewrite{
 		if ($this->current_language = $this->get_current_language()) {
 
 			parent::load();
-
-			$this->load_strings_translations($this->current_language->locale);
 
 			// Strings translation ( must be applied before WordPress applies its default formatting filters )
 			foreach ( array( 'widget_text', 'widget_title') as $filter ) {
@@ -186,12 +185,16 @@ class Falang_Public extends Falang_Rewrite{
 	 * @from 1.0
      * @update 1.3.13 call parent init to load WP Strings translation
      * @update 1.3.57 add action rest_api_init
+     * @update 1.3.59 load_strings_translations is moved from load to init
 	 */
 	public function init() {
 
 	    parent::init();
 
-		if (get_option('permalink_structure')) {
+        $this->load_strings_translations($this->current_language->locale);
+
+
+        if (get_option('permalink_structure')) {
 			add_filter('query_vars', array($this, 'query_vars'));
 			add_filter('request', array($this, 'catch_translation')); // detect query type and language out of query vars
     		add_action('wp', array($this, 'redirect_uncanonical'), 11);
@@ -1855,6 +1858,7 @@ class Falang_Public extends Falang_Rewrite{
      * Filter for 'wp_head'
      *
      * @from 1.3.7
+     * @update 1.3.59 fix the return not used for the falang_hreflang filter
      */
     public function print_hreflang() {
 
@@ -1882,10 +1886,11 @@ class Falang_Public extends Falang_Rewrite{
          * Filters the list of rel hreflang attributes
          *
          * @since 1.3.7
+         * @update 1.3.59 fix the return not used
          *
          * @param array $hreflangs Array of urls with language codes as keys
          */
-        apply_filters('falang_hreflang', $hreflangs);
+        $hreflangs = apply_filters('falang_hreflang', $hreflangs);
 
         foreach ( $hreflangs as $lang => $url ) {
             printf( '<link rel="alternate" href="%s" hreflang="%s" />' . "\n", esc_url( $url ), esc_attr( $lang ) );
@@ -2891,6 +2896,7 @@ class Falang_Public extends Falang_Rewrite{
      * [falangsw]
      *
      * @since 1.3.22
+     * @since 1.4.0 return (thanks to Frank Sundgaard Nielsen) necessary with echo set to false
      */
     public function shortcode_falang_switcher($atts){
 
@@ -2900,11 +2906,11 @@ class Falang_Public extends Falang_Rewrite{
             'display_flags' => 0,
             'hide_current' => 0,
             'positioning' => 'h',
-            'echo' => true,//why ? it's stupid
+            'echo' => true,
         );
         $attr = shortcode_atts( $default,$atts );
         $lswitcher = new Language_Switcher($attr);
-        $lswitcher->display_switcher();
+        return $lswitcher->display_switcher();
     }
 
 

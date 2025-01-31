@@ -365,27 +365,27 @@ if (isset($translations['option'][$falang_target_language_locale][$option_name])
 				<?php } ?>
             </div>
 			<div class="col-action">
-				<button class="button-secondary button-copy" onclick="copyToTranslation('translation','copy');return false;" title="<?php  echo __( 'Copy', 'falang' ) ?>"><i class="fas fa-copy"></i></button>
+				<button class="button-secondary button-copy" onclick="copyToTranslation('translation','copy');return false;" title="<?php  echo __( 'Copy', 'falang' ) ?>"><i class="icon-copy"></i></button>
                 <!-- add yandex/azure button -->
                 <?php if ( !$multiple) { ?>
 				<?php if ($this->model->get_option('enable_service') == '1') { ?>
                     <?php if ($this->model->get_option('service_name') == 'deepl') { ?>
-                        <button class="button-secondary button-copy" onclick="copyToTranslation('translation','translate');return false;" title="<?php  echo __( 'Translate with DeepL', 'falang' ) ?>"><i class="fas fa-globe"></i></button>
+                        <button class="button-secondary button-copy" onclick="copyToTranslation('translation','translate');return false;" title="<?php  echo __( 'Translate with DeepL', 'falang' ) ?>"><i class="icon-globe"></i></button>
                     <?php } ?>
                     <?php if ($this->model->get_option('service_name') == 'google') { ?>
-                        <button class="button-secondary button-copy" onclick="copyToTranslation('translation','translate');return false;" title="<?php  echo __( 'Translate with Google', 'falang' ) ?>"><i class="fab fa-google"></i></button>
+                        <button class="button-secondary button-copy" onclick="copyToTranslation('translation','translate');return false;" title="<?php  echo __( 'Translate with Google', 'falang' ) ?>"><i class="icon-google"></i></button>
                     <?php } ?>
                     <?php if ($this->model->get_option('service_name') == 'yandex') { ?>
-                        <button class="button-secondary button-copy" onclick="copyToTranslation('translation','translate');return false;" title="<?php  echo __( 'Translate with Yandex', 'falang' ) ?>"><i class="fab fa-yandex-international"></i></button>
+                        <button class="button-secondary button-copy" onclick="copyToTranslation('translation','translate');return false;" title="<?php  echo __( 'Translate with Yandex', 'falang' ) ?>"><i class="icon-yandexl"></i></button>
                     <?php } ?>
                     <?php if ($this->model->get_option('service_name') == 'azure') { ?>
-                        <button class="button-secondary button-copy" onclick="copyToTranslation('translation','translate');return false;" title="<?php  echo __( 'Translate with Azure', 'falang' ) ?>"><i class="fab fa-windows"></i></button>
+                        <button class="button-secondary button-copy" onclick="copyToTranslation('translation','translate');return false;" title="<?php  echo __( 'Translate with Azure', 'falang' ) ?>"><i class="icon-windows"></i></button>
                     <?php } ?>
                     <?php if ($this->model->get_option('service_name') == 'lingvanex') { ?>
-                        <button class="button-secondary button-copy" onclick="copyToTranslation('translation','translate');return false;" title="<?php  echo __( 'Translate with Lingvanex', 'falang' ) ?>"><i class="fas fa-globe"></i></button>
+                        <button class="button-secondary button-copy" onclick="copyToTranslation('translation','translate');return false;" title="<?php  echo __( 'Translate with Lingvanex', 'falang' ) ?>"><i class="icon-globe"></i></button>
                     <?php } ?>
                     <?php } else { ?>
-                        <button class="button-secondary button-copy" disabled title="<?php  echo __( 'No Translate Service enabled', 'falang' ) ?>"><i class="fas fa-language"></i></button>
+                        <button class="button-secondary button-copy" disabled title="<?php  echo __( 'No Translate Service enabled', 'falang' ) ?>"><i class="icon-language"></i></button>
                     <?php }  ?>
                 <?php }//not multiple ?>
 			</div>

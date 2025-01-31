@@ -31,6 +31,7 @@ class TranslatorDeepl extends TranslatorDefault {
 
     /*
      * @from 1.3.54
+     * @update 1.3.58 get the local and not lang code , fix the bug with elementor
      *
      * Translate content to target language
      * support html translation
@@ -42,7 +43,7 @@ class TranslatorDeepl extends TranslatorDefault {
      */
     public function translate($text,$targetLocale){
         //isocode are put in the js and get here
-        $targetLanguageCode = $targetLocale;
+        $targetLanguageCode = $this->languageCodeToISO($targetLocale);
         $sourceLanguageCode = $this->languageCodeToISO(Falang()->get_model()->get_default_language()->locale);
 
         //$this->token don't work here
@@ -77,19 +78,32 @@ class TranslatorDeepl extends TranslatorDefault {
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 
-        $response          = new \stdClass();
-
         if( ! $result = curl_exec($ch))
         {
             $error = curl_error($ch);
+            $response          = new \stdClass();
             $response->success = false;
-            $response->data[]  = $error;//allow to display error in the input result
+            $response->data = 'error unknown';
             return $response;
         }
         curl_close($ch);
 
-        $response->success = true;
-        $response->data = $result;
+        $resultDecoded = json_decode($result);
+        $response          = new \stdClass();
+
+        if (isset($resultDecoded->error)){
+            $response->success= false;
+            $response->data = $resultDecoded->error->message;
+            return $response;
+        }
+        //decode the translation returned
+        try {
+            $response->success = true;
+            $response->data = $resultDecoded->translations[0]->text;
+        } catch (\Exception $e) {
+            $response->success= false;
+            $response->data  = $e->getMessage();
+        }
 
         return $response;
     }

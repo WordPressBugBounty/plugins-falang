@@ -14,6 +14,9 @@ class TranslatorFactory
 {
 	private static $translator;
 
+    /*
+     * use the local $from and $to
+     * */
 	static public function getTranslator($target_language_locale)
 	{
 	    global $falang;
@@ -29,8 +32,8 @@ class TranslatorFactory
         $translator_ref = new \ReflectionClass($service_class_name);
         $translator = $translator_ref->newInstance();
 
-		$from = $translator->languageCodeToISO(Falang()->get_model()->get_default_language()->locale);
-		$to   = $translator->languageCodeToISO($target_language_locale);
+        $from = Falang()->get_model()->get_default_language()->locale;
+        $to   = $target_language_locale;
 
 		$translator->installScripts($from,$to);
 
