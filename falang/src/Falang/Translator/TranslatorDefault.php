@@ -49,6 +49,7 @@ class TranslatorDefault {
 
     /*
      * @udpate 1.3.59 language code for finish fi
+     * @udpate 1.3.60 put back en-ca and fr-ca
      * */
 	static public $languageCodeInISO = array (
         'af-za' => 'AF',	// Afrikaans
@@ -71,7 +72,7 @@ class TranslatorDefault {
         // 'prs-AF' => '',		// Dari Persian
         'nl-nl' => 'NL', 	// Dutch
         'en-au' => 'EN', 	// English Australia
-        // 'en-CA' => '',		// English Canadian
+        'en-ca' => 'EN',		// English Canadian
         'en-gb' => 'EN',	// Queen's English
         'en-us' => 'EN', 	// English US
         'eo-xx' => 'EO', 	// Esperanto
@@ -79,7 +80,7 @@ class TranslatorDefault {
         'fi' => 'FI', 	// Finnish
         'nl-be' => 'NL', 	// Flemish
         'fr-fr' => 'FR', 	// French
-        // 'fr-CA' => '',		// French Canadian only fr-ca/bing
+        'fr-ca' => 'FR',		// French Canadian only fr-ca/bing
         'gl-es' => 'GZ', 	// Galcian
         'ka-ge' => 'KA',	// Georgian
         'de-de' => 'DE', 	// German

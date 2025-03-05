@@ -24,13 +24,6 @@ if (isset($data[$falang_row])){
 
 $translation = $falang_mo->translate($tdata['string']);
 
-if ($falang_model->get_option('enable_service')){
-	$translator =  TranslatorFactory::getTranslator($falang_target_language_locale);
-	$target_code_iso = strtolower($translator->languageCodeToISO($falang_target_language_locale));
-}
-
-
-
 ?>
 <html>
 <head>
@@ -118,7 +111,7 @@ if ($falang_model->get_option('enable_service')){
 
             //update translator object to refer to popup windows
             if (typeof translator != "undefined") {
-                translator.to = "<?php echo $target_code_iso?>";
+                translator.to = "<?php echo $falang_target_language_locale?>";
             }
         });
 

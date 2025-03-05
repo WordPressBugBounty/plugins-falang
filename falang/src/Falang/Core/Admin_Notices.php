@@ -22,7 +22,7 @@ class Admin_Notices {
 	const ADMIN_NOTICES_KEY         = 'falang_dismissed_notices';
 	const ADMIN_NOTICES_KEY_DATE    = 'falang_dismissed_notices_date';//last notices dismissed date
 	const ADMIN_NOTICES_INSTALLED_TIME  = 'falang_installed_time';//store the time the notice was installed
-	const ADMIN_NOTICES_TIME        = 7*24*60*60;//7*24*60*60 ;// 7*24*60*60;1 week between each notices debug: 2*60//;
+	const ADMIN_NOTICES_TIME        = 2*7*24*60*60;//7*24*60*60 ;// 7*24*60*60;2 week between each notices debug: 2*60//;
 
 	/**
 	 * Constructor.

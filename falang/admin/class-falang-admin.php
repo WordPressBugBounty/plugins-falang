@@ -2005,11 +2005,19 @@ class Falang_Admin extends Falang_Rewrite
     }
 
 
+    /*
+     * @update 1.3.60 save term add info to reponse to allow list update published/content
+     * */
     public function ajax_update_term_translation()
     {
         // build response
         $response = new stdClass();
         $response->success = $this->save_term_translation();
+        $response->id = empty($_POST['term_id']) ? '' : $_POST['term_id'];
+        $response->locale = empty($_POST['target_language']) ? '' : $_POST['target_language'];
+        $response->published = $this->get_value_from_post('published', '') == '1' ? '1' : '0';
+        $response->translated_name = empty($_POST['name']) ? '' :  $_POST['name'];;
+        $response->original_name = empty($_POST['fake_original_value_name']) ? '' :  $_POST['fake_original_value_name'];;
         $this->return_json($response);
         exit();
     }

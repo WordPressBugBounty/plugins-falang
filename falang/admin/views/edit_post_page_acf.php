@@ -53,7 +53,7 @@ foreach ($acf_fields as $key => $acf_fvalue) { ?>
                 ?>
         </div><!-- col-source -->
         <div class="col-action">
-            <button class="button-secondary button-copy" onclick="copyToTranslation('<?php echo $key;?>','copy');return false;" title="<?php  echo __( 'Copy', 'falang' ) ?>"><i class="far fa-copy"></i></button>
+            <button class="button-secondary button-copy" onclick="copyToTranslation('<?php echo $key;?>','copy');return false;" title="<?php  echo __( 'Copy', 'falang' ) ?>"><i class="icon-copy"></i></button>
             <!-- add yandex/azure button -->
             <?php if ($falang_model->get_option('enable_service') == '1') { ?>
                 <?php if ($falang_model->get_option('service_name') == 'deepl') { ?>

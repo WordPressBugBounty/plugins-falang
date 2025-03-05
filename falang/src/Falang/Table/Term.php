@@ -103,8 +103,7 @@ class Term extends \WP_List_Table {
 		//add language column
 		//language list is only non default language
 		foreach ($this->language_list as $language){
-			$columns[$language->locale] =  $language->get_flag();
-
+            $columns[$language->locale] =  $language->get_flag();
 		}
 
 		//add ID column to the end
@@ -208,6 +207,9 @@ class Term extends \WP_List_Table {
 
 
 
+    /*
+     * @update 1.3.60 Add id-locale to each item to allow update
+     * */
 	private function display_translation_term_action($item,$locale){
 		//only display action if post locale is set to all (or missing)
 		//TODO make a method on Translation Post
@@ -262,13 +264,15 @@ class Term extends \WP_List_Table {
 		 */
 		$actions = apply_filters( 'falang_translate_term_actions', $actions, $item );
 
-		$row_header = $status.' '.$header_title;
+        $row_header = "<div id='".$item->id."-".$locale."'>";
+        $row_header .= $status.' '.$header_title;
+        $row_header .= '</div>';
 
-		return sprintf("%s %s",$row_header,$this->row_actions( $actions,false ));
-
+        return sprintf("%s %s",$row_header,$this->row_actions( $actions,false ));
 
 		//return $this->row_actions( $actions,true );
 	}
+
 
 
 

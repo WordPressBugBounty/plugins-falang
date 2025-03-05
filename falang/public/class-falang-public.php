@@ -104,6 +104,7 @@ class Falang_Public extends Falang_Rewrite{
      * @since 1.3.33 add get_term_metadata filter
      * @since 1.3.35 add theme editor workaround here
      * @update 1.3.59 move the load_strings_translations to init
+     * @update 1.3.60 pub back the load_strings_translations to load
 	 */
 	public function load() {
         //theme_editor don't like falang with home slug - disable falang for theme editor check
@@ -114,6 +115,8 @@ class Falang_Public extends Falang_Rewrite{
 		if ($this->current_language = $this->get_current_language()) {
 
 			parent::load();
+
+            $this->load_strings_translations($this->current_language->locale);
 
 			// Strings translation ( must be applied before WordPress applies its default formatting filters )
 			foreach ( array( 'widget_text', 'widget_title') as $filter ) {
@@ -186,13 +189,13 @@ class Falang_Public extends Falang_Rewrite{
      * @update 1.3.13 call parent init to load WP Strings translation
      * @update 1.3.57 add action rest_api_init
      * @update 1.3.59 load_strings_translations is moved from load to init
+     * @update 1.3.60 put back load_strings_translations to load (was not always working in init)
 	 */
 	public function init() {
 
 	    parent::init();
 
-        $this->load_strings_translations($this->current_language->locale);
-
+//        $this->load_strings_translations($this->current_language->locale);
 
         if (get_option('permalink_structure')) {
 			add_filter('query_vars', array($this, 'query_vars'));

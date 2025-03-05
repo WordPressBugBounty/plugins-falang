@@ -5,7 +5,7 @@ Tags: multilingual, translation, translate, bilingual, localization
 Requires at least: 4.7
 Tested up to: 6.7
 Requires PHP: 5.6
-Stable tag: 1.3.59
+Stable tag: 1.3.60
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -105,6 +105,16 @@ Purchased licenses come with 1 year on-site support.
 3. The Language Listing panel
 
 == Changelog ==
+
+* 1.3.60 (2025/03/05)
+* update term translation in the list status/content on save modal
+* fix term translation service translation
+* fix string translation service translation
+* fix options translation service translation
+* notice are now displayed every 2 weeks not 1
+* add english/french canadian
+* temporary fix load string translation put back in plugin plugins_loaded filter
+* fix new icon copy on acf translation
 
 * 1.3.59 (2025/01/30)
 * fix bug in falangw shortcode use to display the switcher (thanks to Frank Sundgaard Nielsen)

@@ -10,12 +10,6 @@ use Falang\Factory\TranslatorFactory;
 $core_taxonomy = new \Falang\Core\Taxonomy($falang_id);
 $original_term = get_term($falang_id);
 $target_language = $this->model->get_language_by_locale($falang_target_language_locale);
-
-if ($this->model->get_option('enable_service')){
-	$translator =  TranslatorFactory::getTranslator($falang_target_language_locale);
-    $target_code_iso = strtolower($translator->languageCodeToISO($falang_target_language_locale));
-}
-
 ?>
 <html>
 <head>
@@ -49,6 +43,26 @@ if ($this->model->get_option('enable_service')){
 
                         if (response.success) {
                             // request was successful
+                            try {
+                                //change the term row status
+                                let elt = document.getElementById(response.id+'-'+response.locale);
+                                elt.innerHTML = "";
+                                let content;
+                                let status;
+                                if (response.published == 1){
+                                    status = '<span class="dashicons dashicons-yes-alt" style="font-size: 13px;line-height: 1.5em;color:green"></span>';
+                                } else {
+                                    status = '<span class="dashicons dashicons-marker" style="font-size: 13px;line-height: 1.5em;color:grey"></span>';
+                                }
+                                if ((response.translated_name)&&(response.translated_name.trim()!='')){
+                                    content = response.translated_name;
+                                } else {
+                                    content = '<i style="color: grey">'+response.original_name+'</i>';
+                                }
+                                elt.innerHTML = status+content;
+                            } catch(err) {
+                                console.log(err.message);
+                            }
                             tb_remove();
                         } else {
                             //TODO display error for user
@@ -84,7 +98,7 @@ if ($this->model->get_option('enable_service')){
 
             //update translator object to refer to popup windows
             if (typeof translator != "undefined") {
-                translator.to = "<?php echo $target_code_iso?>";
+                translator.to = "<?php echo $falang_target_language_locale?>";
             }
         });
 

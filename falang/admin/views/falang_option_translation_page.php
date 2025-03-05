@@ -15,11 +15,6 @@ $target_language = $this->model->get_language_by_locale($falang_target_language_
 
 $option_name = $falang_name;
 
-if ($this->model->get_option('enable_service')){
-	$translator =  TranslatorFactory::getTranslator($falang_target_language_locale);
-	$target_code_iso = strtolower($translator->languageCodeToISO($falang_target_language_locale));
-}
-
 //get option name value
 $option_value = get_option($option_name);
 $multiple = false;
@@ -108,7 +103,7 @@ if (isset($translations['option'][$falang_target_language_locale][$option_name])
 
             //update translator object to refer to popup windows
             if (typeof translator != "undefined") {
-                translator.to = "<?php echo $target_code_iso?>";
+                translator.to = "<?php echo $falang_target_language_locale?>";
             }
         });
 
