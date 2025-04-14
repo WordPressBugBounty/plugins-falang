@@ -14,6 +14,7 @@ class Yoast {
      * @from 1.3.8
      *
      * @update 1.3.40 add filter wpseo_breadcrumb_links
+     * @update 1.3.61 fix _yoast_wpseo_canonical
      */
     public function __construct() {
 
@@ -23,6 +24,7 @@ class Yoast {
         //for only translated language test default in the function
         add_filter('wpseo_title', array($this, 'wpseo_title'), 10, 2);
         add_filter('wpseo_opengraph_title', array($this, 'wpseo_og_title'), 10, 2);
+        add_filter('wpseo_canonical', array($this, 'wpseo_canonical'), 10, 2);
 
         add_filter('wpseo_metadesc', array($this, 'wpseo_metadesc'), 10, 2);
         add_filter('wpseo_opengraph_desc', array($this, 'wpseo_opengraph_desc'), 10, 2);
@@ -101,6 +103,11 @@ class Yoast {
         return  $this->translate_title($title,$presentation,array('_yoast_wpseo_opengraph-title','_yoast_wpseo_title','post_title'));
     }
 
+    public function wpseo_canonical($description,$presentation)
+    {
+        return  $this->translate_description($description,$presentation,array('_yoast_wpseo_canonical','_yoast_wpseo_canonical'));
+    }
+
     public function wpseo_metadesc($description, $presentation)
     {
         return $this->translate_description($description, $presentation,array('_yoast_wpseo_metadesc','post_excerpt'));
@@ -112,8 +119,7 @@ class Yoast {
     }
 
     /*
-     * @update 1.3.57
-     * fix from Stamatios Aronis
+     * @update 1.3.57 fix from Stamatios Aronis
      * */
     private function translate_title($title,$presentation,array $optionNames) {
         if(Falang()->is_default()) return $title;
@@ -129,7 +135,7 @@ class Yoast {
             //normal post title translation
             $falang_post = new \Falang\Core\Post($presentation->model->object_id);
 
-            if ($post && $falang_post->is_post_type_translatable($post->post_type)){
+            if ($post && $falang_post->is_post_type_translatable($post->post_type)) {
 
                 $last_key = $this->array_key_last($optionNames);
                 foreach ($optionNames as $key => $optionName) {
@@ -138,7 +144,7 @@ class Yoast {
                         $title = $falang_post->translate_post_field($post, 'post_title', $language, $title);
                     } else {
                         //specific yoast title set
-                        $yoast_wpseo_title = $falang_post->translate_post_meta($post, $optionName,true,$language, '');
+                        $yoast_wpseo_title = $falang_post->translate_post_meta($post, $optionName, true, $language, '');
                         if (!empty($yoast_wpseo_title)) {
                             $title = $yoast_wpseo_title;
                             break;

@@ -13,10 +13,11 @@ namespace Falang\Core;
  * term_taxonomy_id    => term taxonomy id in 'language' taxonomy
  * taxonomy            => 'language'
  * description         => language locale for backward compatibility
-
  *
+ * @update 1.3.61 use of AllowDynamicProperties
 **/
 
+#[AllowDynamicProperties]
 class Language {
 	public $term_id;    //id of term in 'language' taxonomy
 	public $name;       //language name. Ex: English

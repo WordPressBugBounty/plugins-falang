@@ -105,6 +105,7 @@ class Falang_Public extends Falang_Rewrite{
      * @since 1.3.35 add theme editor workaround here
      * @update 1.3.59 move the load_strings_translations to init
      * @update 1.3.60 pub back the load_strings_translations to load
+     * @update 1.3.61 call set language to allow  WPML ICL_LANGUAGE_CODE and ICL_LANGUAGE_NAME define
 	 */
 	public function load() {
         //theme_editor don't like falang with home slug - disable falang for theme editor check
@@ -113,6 +114,8 @@ class Falang_Public extends Falang_Rewrite{
         }
 
 		if ($this->current_language = $this->get_current_language()) {
+
+            $this->set_language($this->current_language);//allow the action falang_language_defined
 
 			parent::load();
 
@@ -1013,6 +1016,7 @@ class Falang_Public extends Falang_Rewrite{
      * @from 1.3.41 skip post translation for Divi Post (use Divi code for the test)
      * @from 1.3.42 skip post translation for Elementor page (see on muziekindecathrien)
      * @from 1.3.50 add test on $post->ID
+     * @from 1.3.61 add password protection support
      *
      */
 	public function translate_post_content($content) {
@@ -1056,8 +1060,15 @@ class Falang_Public extends Falang_Rewrite{
 
 			/*
 			 * @since 1.3.27 add filter for content (use for readmore text)
-			 * */
+			 */
             $content = apply_filters( 'falang_translate_post_content', $content );
+
+            /*
+             * @since 1.3.61 add password protection
+             */
+            if ( post_password_required( $post ) ) {
+                return get_the_password_form( $post );
+            }
 
 		}
 
@@ -2900,6 +2911,7 @@ class Falang_Public extends Falang_Rewrite{
      *
      * @since 1.3.22
      * @since 1.4.0 return (thanks to Frank Sundgaard Nielsen) necessary with echo set to false
+     * @update 1.3.62 set default as false
      */
     public function shortcode_falang_switcher($atts){
 
@@ -2909,7 +2921,7 @@ class Falang_Public extends Falang_Rewrite{
             'display_flags' => 0,
             'hide_current' => 0,
             'positioning' => 'h',
-            'echo' => true,
+            'echo' => 0,
         );
         $attr = shortcode_atts( $default,$atts );
         $lswitcher = new Language_Switcher($attr);

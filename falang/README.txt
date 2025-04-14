@@ -5,7 +5,7 @@ Tags: multilingual, translation, translate, bilingual, localization
 Requires at least: 4.7
 Tested up to: 6.7
 Requires PHP: 5.6
-Stable tag: 1.3.60
+Stable tag: 1.3.61
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -105,6 +105,17 @@ Purchased licenses come with 1 year on-site support.
 3. The Language Listing panel
 
 == Changelog ==
+
+* 1.3.61 (2025/04/14)
+* shortcode falang switcher fix the echo
+* add password protection support for translated content
+* fix yoast canonical on page
+* fix title display
+* support for My Agile Privacy
+* fix deprecated Falang\Core\Language::$term_order
+* add falang_languages_list (like pll_languages_list)
+* fix duplicator pro popup bug with Falang [data-tooltip]
+* add WPML ICL_LANGUAGE_CODE and ICL_LANGUAGE_NAME define (fix bug with some theme)
 
 * 1.3.60 (2025/03/05)
 * update term translation in the list status/content on save modal

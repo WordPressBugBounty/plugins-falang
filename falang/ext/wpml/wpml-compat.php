@@ -19,6 +19,7 @@ class FALANG_WPML_Compat {
 	 * Constructor
 	 *
 	 * @since 1.1
+     * @update 1.3.61 add falang_language_defined action
 	 */
 	protected function __construct() {
 		// Load the WPML API
@@ -28,6 +29,8 @@ class FALANG_WPML_Compat {
 
 		self::$strings = get_option( 'falang_wpml_strings', array() );
 		add_filter( 'falang_get_strings', array( $this, 'get_strings' ) );
+
+        add_action( 'falang_language_defined', array( $this, 'define_constants' ) );
 
 	}
 
@@ -45,6 +48,32 @@ class FALANG_WPML_Compat {
 		return self::$instance;
 	}
 
+    /**
+     * Defines two WPML constants once the language has been defined
+     * function from polylang system but use only on front-end
+     *
+     * @since 1.3.61
+     *
+     * @return void
+     */
+    public function define_constants() {
+        if ( ! empty( Falang()->get_current_language() ) ) {
+            if ( ! defined( 'ICL_LANGUAGE_CODE' ) ) {
+                define( 'ICL_LANGUAGE_CODE', Falang()->get_current_language()->slug );
+            }
+            if ( ! defined( 'ICL_LANGUAGE_NAME' ) ) {
+                define( 'ICL_LANGUAGE_NAME', Falang()->get_current_language()->name );
+            }
+        } else {
+            if ( ! defined( 'ICL_LANGUAGE_CODE' ) ) {
+                define( 'ICL_LANGUAGE_CODE', 'all' );
+            }
+
+            if ( ! defined( 'ICL_LANGUAGE_NAME' ) ) {
+                define( 'ICL_LANGUAGE_NAME', '' );
+            }
+        }
+    }
 
 	/**
 	 * Unlike pll_register_string, icl_register_string stores the string in database

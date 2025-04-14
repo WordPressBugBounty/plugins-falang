@@ -294,10 +294,11 @@ class Falang_Core {
 
 		/**
 		 * Fires when the current language is defined
+         * use for wpml compat
 		 *
-		 * @since 0.9.5
+		 * @since 0.9
 		 *
-		 * @param string $slug    current language code
+		 * @param string $slug    current language locale
 		 * @param object $curlang current language object
 		 */
 		do_action( 'falang_language_defined', $language->locale, $this->current_language );

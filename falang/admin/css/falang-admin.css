@@ -601,12 +601,12 @@ span.falang-locale-icon{
     margin-top:6px
 }
 
-[data-tooltip] {
+td.column-locale [data-tooltip] {
     display: inline-block;
     position: relative;
     padding: 4px;
 }
-[data-tooltip]:before {
+td.column-locale [data-tooltip]:before {
     content: attr(data-tooltip);
     display: none;
     position: absolute;
@@ -619,8 +619,8 @@ span.falang-locale-icon{
     text-align: center;
     border-radius: 4px;
 }
-[data-tooltip]:hover:before,
-[data-tooltip]:hover:after {
+td.column-locale [data-tooltip]:hover:before,
+td.column-locale [data-tooltip]:hover:after {
     display: block;
     z-index: 50;
 }

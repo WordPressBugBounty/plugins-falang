@@ -122,6 +122,21 @@ function falang_clean( $var ) {
 }
 
 /**
+ * Returns the list of available languages.
+ * based on the pll_languages_list to follow the same idee
+ *
+ * @api
+ * @since 1.3.61
+ *
+ * @param array $args {
+ *   Optional array of arguments.
+ *
+ */
+function falang_languages_list( $args = array() ) {
+    return Falang()->model->get_languages_list( $args );
+}
+
+/**
  * Display message when paid version activated
  * Since 1.3.29
  */

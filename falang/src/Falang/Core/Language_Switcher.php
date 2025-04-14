@@ -46,9 +46,12 @@ class Language_Switcher {
 	}
 
 
+    /*
+     * @update 1.3.61 change default value false to 0
+     * */
 	public function display_switcher() {
 		$args = wp_parse_args( $this->params, array(
-			'echo' => false,
+			'echo' => 0,
 		) );
         $width = Falang()->get_model()->get_option('flag_width','16');
         $height = Falang()->get_model()->get_option('flag_height','11');
