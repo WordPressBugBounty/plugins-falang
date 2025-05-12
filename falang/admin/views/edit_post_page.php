@@ -283,6 +283,7 @@ if ($falang_model->get_option('enable_service')){
           ?>
 
                 <div class="row">
+                    <?php wp_nonce_field('falang_save_post-'.$falang_original_post_id, 'falang_save_post_nonce', true, true); ?>
                     <input type="hidden" name="action" value="falang_save_post" />
                     <input type="hidden" name="target_language" value="<?php echo $falang_target_language_locale?>">
                     <input type="hidden" name="post_id" value="<?php echo $falang_original_post_id?>">

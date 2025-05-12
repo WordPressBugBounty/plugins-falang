@@ -1017,6 +1017,7 @@ class Falang_Public extends Falang_Rewrite{
      * @from 1.3.42 skip post translation for Elementor page (see on muziekindecathrien)
      * @from 1.3.50 add test on $post->ID
      * @from 1.3.61 add password protection support
+     * @from 1.3.62 add yootheme livesearch support (skip content translation)
      *
      */
 	public function translate_post_content($content) {
@@ -1051,6 +1052,11 @@ class Falang_Public extends Falang_Rewrite{
         }
         //another check on yootheme builder
         if ($post and preg_match('/<!-- Builder/',$content)){
+            return $content;
+        }
+
+        //skip on yootheme live search
+        if (isset($_POST["live-search"]) && $_POST["live-search"]){
             return $content;
         }
 

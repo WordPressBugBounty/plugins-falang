@@ -3,9 +3,9 @@ Contributors: sbouey
 Donate link: www.faboba.com/falangw/
 Tags: multilingual, translation, translate, bilingual, localization
 Requires at least: 4.7
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 5.6
-Stable tag: 1.3.61
+Stable tag: 1.3.62
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -105,6 +105,13 @@ Purchased licenses come with 1 year on-site support.
 3. The Language Listing panel
 
 == Changelog ==
+
+* 1.3.62 (2025/05/12)
+* add yootheme live search support
+* fix yootheme search bug
+* add WC term&condition translation when it's embeded in the page
+* fix security (CSRF)
+* WordPress 6.8 compatible
 
 * 1.3.61 (2025/04/14)
 * shortcode falang switcher fix the echo

@@ -12,6 +12,7 @@ class WooCommerce {
      * @update 1.3.28 add woocommerce_product_title filter
      * @update 1.3.44 add filter for widget product list name/title translation
      * @update 1.3.54 add filter for lost password submit redirection woocommerce_get_endpoint_url
+     * @update 1.3.62 fix term&condition translation (in the checkout page)
 	 *
 	 */
 	public function __construct( ) {
@@ -43,6 +44,10 @@ class WooCommerce {
 
         //translate the endpoint url use for lost password
         add_filter('woocommerce_get_endpoint_url',array($this,'translate_woocommerce_get_endpoint_url'), 10, 4);
+
+        //change wc_term_and_condition
+        remove_action('woocommerce_checkout_terms_and_conditions','wc_terms_and_conditions_page_content',30);
+        add_action('woocommerce_checkout_terms_and_conditions',array($this,'translate_woocommerce_checkout_terms_and_conditions'),30);
 
     }
 
@@ -220,5 +225,31 @@ class WooCommerce {
             }
         }
         return $url;
+    }
+
+    /**
+     * Translate the in line term and condition page
+     * the default code is removed with the remove_action
+     * need to be done for the default language too (the action is removed)
+     *
+     * @since 1.3.62
+     */
+    function translate_woocommerce_checkout_terms_and_conditions() {
+            $terms_page_id = wc_terms_and_conditions_page_id();
+
+            if ( ! $terms_page_id ) {
+                return;
+            }
+
+            $sanitizer = wc_get_container()->get( HtmlSanitizer::class );
+            $page = get_post( $terms_page_id );
+
+            $falang_post = new \Falang\Core\Post($terms_page_id);
+            $translated_content = $falang_post->translate_post_field($page, 'post_content', Falang()->get_current_language(), $page->post_content);
+
+            if ( $page && 'publish' === $page->post_status && $page->post_content && ! has_shortcode( $page->post_content, 'woocommerce_checkout' ) ) {
+                echo '<div class="woocommerce-terms-and-conditions" style="display: none; max-height: 200px; overflow: auto;">' . wc_format_content( $sanitizer->styled_post_content($translated_content) ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            }
+
     }
 }

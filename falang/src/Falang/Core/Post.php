@@ -21,19 +21,21 @@ class Post {
 	var $option_name = 'falang';//todo not here
 
 
-
+    /**
+     * Constructor
+     *
+     * @update 1.3.62 enable filtering on field only for known post_type
+     *                fix yootheme search bug
+     */
 	public function __construct( $post_id = null ) {
 		if ($post_id) {
 			$this->post_id   = $post_id;
 			$this->post_type = get_post_type( $post_id );
 			$this->metakey   = get_post_meta( $post_id);
 			$this->locale    = $this->get_post_locale();
-
-
+            //enable the filtering of field (content, exerpt...)
+            $this->fields = $this->get_post_type_fields($this->post_type);
 		}
-		//enable the filtering of field (content, exerpt
-        $this->fields = $this->get_post_type_fields($this->post_type);
-
 	}
 
 	//TODO make the method
@@ -205,11 +207,18 @@ class Post {
 	 *
 	 * @from 1.0
 	 *
+     * @update 1.3.62 add $post_type test (yootheme live search send an array of post type and not just 1 string
+     *                can be change in 443 class-falang-public too
 	 * @return mixed
 	 */
 	public function get_post_type_options($post_type, $default = array()) {
 
 		$post_types_options = $this->get_post_types_options();
+
+        //fix for live search
+        if (is_array($post_type)){
+            $post_type = $post_type[0];
+        }
 
 		if (isset($post_types_options[$post_type])) {
 

@@ -549,16 +549,22 @@ class Falang_Admin extends Falang_Rewrite
      * Manages the user input for the translations pages
      * @param string $action
      * @since 1.0
+     *
+     * @update 1.62 add nonce verification for CSRF security
      */
     public function handle_translation_actions($action)
     {
-        //if ( ! current_user_can('manage_post_translation') ) return;
 
+        //if ( ! current_user_can('manage_post_translation') ) return;
         $request_action = $this->request_action();
 
         // save/update translation
         if ($request_action == 'falang_save_post') {
-            //check_admin_referer( 'falang_save_pody' );
+
+            if (!wp_verify_nonce( $_POST['falang_save_post_nonce'],"falang_save_post-{$_POST['post_id']}")) {
+                die( __( 'Security check error', 'falang' ) );
+            }
+
             $this->save_translation_post();
         }
 
