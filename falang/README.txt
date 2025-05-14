@@ -5,7 +5,7 @@ Tags: multilingual, translation, translate, bilingual, localization
 Requires at least: 4.7
 Tested up to: 6.8
 Requires PHP: 5.6
-Stable tag: 1.3.62
+Stable tag: 1.3.63
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -105,6 +105,9 @@ Purchased licenses come with 1 year on-site support.
 3. The Language Listing panel
 
 == Changelog ==
+
+* 1.3.63 (2025/05/14)
+* fix error on WC checkout
 
 * 1.3.62 (2025/05/12)
 * add yootheme live search support

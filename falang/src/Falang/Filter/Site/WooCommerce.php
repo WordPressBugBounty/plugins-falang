@@ -3,6 +3,8 @@
 namespace Falang\Filter\Site;
 
 
+use Automattic\WooCommerce\Internal\Utilities\HtmlSanitizer;
+
 class WooCommerce {
 
 	/**
