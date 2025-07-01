@@ -120,6 +120,7 @@ class Yoast {
 
     /*
      * @update 1.3.57 fix from Stamatios Aronis
+     * @update 1.3.64 fix yoast title translation (no variable in the title)
      * */
     private function translate_title($title,$presentation,array $optionNames) {
         if(Falang()->is_default()) return $title;
@@ -151,8 +152,11 @@ class Yoast {
                         }
                     }
                 }
-
-                $title = wpseo_replace_vars( $presentation->title, array( "post_title" => $title ) );
+                //1.3.64 change due to improvment
+                //nothing to filter use directly the title
+                if (strpos($presentation->title, '%%') !== false) {
+                    $title = wpseo_replace_vars($presentation->title, array("post_title" => $title));
+                }
 
             }
         }

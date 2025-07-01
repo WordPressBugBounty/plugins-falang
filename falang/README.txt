@@ -5,7 +5,7 @@ Tags: multilingual, translation, translate, bilingual, localization
 Requires at least: 4.7
 Tested up to: 6.8
 Requires PHP: 5.6
-Stable tag: 1.3.63
+Stable tag: 1.3.64
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -80,6 +80,10 @@ _(French version with english subtitles)_
 * Falang for WPBakery [Falang for WPBakery](https://wordpress.org/plugins/falang-for-wpbakery-lite/)
 * Falang for YooTheme [Falang for YOOtheme](https://wordpress.org/plugins/falang-for-yootheme-lite/)
 
+= Falang integration =
+
+* My Agile Privacy
+
 == Installation ==
 
 1. Upload the entire Falang folder to the /wp-content/plugins/ directory or install from WP Plugins
@@ -105,6 +109,9 @@ Purchased licenses come with 1 year on-site support.
 3. The Language Listing panel
 
 == Changelog ==
+
+* 1.3.64 (2025/07/01)
+* fix yoast title translation (no variable in the title)
 
 * 1.3.63 (2025/05/14)
 * fix error on WC checkout
