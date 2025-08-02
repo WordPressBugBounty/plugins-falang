@@ -51,6 +51,7 @@ class FALANG_WPML_Config {
 	 * Finds the wpml-config.xml files to parse and setup filters
 	 *
 	 * @since 1.3.1
+     * @update 1.3.65 add custom wpml-config.xml in falang
 	 */
 	public function init() {
 		$this->xmls = array();
@@ -77,16 +78,11 @@ class FALANG_WPML_Config {
 		}
 
 		// Custom
-//		if ( file_exists( $file = PLL_LOCAL_DIR . '/wpml-config.xml' ) && false !== $xml = simplexml_load_file( $file ) ) {
-//			$this->xmls['Polylang'] = $xml;
-//		}
+		if ( file_exists( $file = FALANG_DIR . '/wpml-config.xml' ) && false !== $xml = simplexml_load_file( $file ) ) {
+			$this->xmls['Falang'] = $xml;
+		}
 
 		if ( ! empty( $this->xmls ) ) {
-//			add_filter( 'pll_copy_post_metas', array( $this, 'copy_post_metas' ), 20, 2 );
-//			add_filter( 'pll_copy_term_metas', array( $this, 'copy_term_metas' ), 20, 2 );
-//			add_filter( 'pll_get_post_types', array( $this, 'translate_types' ), 10, 2 );
-//			add_filter( 'pll_get_taxonomies', array( $this, 'translate_taxonomies' ), 10, 2 );
-
 			foreach ( $this->xmls as $context => $xml ) {
                 $keys = $xml->xpath( 'admin-texts/key' );
                 if ( is_array( $keys ) ) {

@@ -15,15 +15,28 @@ class Falang_Mo extends \MO {
 	 * Registers the falang_mo custom post type, only at first object creation
 	 *
 	 * @since 1.2
+     * @update 1.3.65 fix _load_textdomain_just_in_time warning thanks to Alexandre Froger
 	 */
 	public function __construct() {
 		//TODO put here or on Falang install
 		if ( ! post_type_exists( 'falang_mo' ) ) {
-			$labels = array( 'name' => __( 'String translations', 'falang' ) );
-			register_post_type( 'falang_mo', array( 'labels' => $labels, 'rewrite' => false, 'query_var' => false, '_falang' => true ) );
+			//$labels = array( 'name' => __( 'String translations', 'falang' ) );
+			//register_post_type( 'falang_mo', array( 'labels' => $labels, 'rewrite' => false, 'query_var' => false, '_falang' => true ) );
+            if ( ! has_action( 'init', array( __CLASS__, 'initialize_post_type' ) ) ) {
+                add_action( 'init', array( __CLASS__, 'initialize_post_type' ) );
+            }
 		}
 	}
 
+    /**
+     * init post type use for fixing _load_textdomain_just_in_time
+     *
+     * @since 1.3.65
+     */
+    public static function initialize_post_type() {
+        $labels = array( 'name' => __( 'String translations', 'falang' ) );
+        register_post_type( 'falang_mo', array( 'labels' => $labels, 'rewrite' => false, 'query_var' => false, '_falang' => true ) );
+    }
 
 	/**
 	 * Returns the post id of the post storing the strings translations

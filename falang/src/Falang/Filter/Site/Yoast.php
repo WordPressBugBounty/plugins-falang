@@ -1,10 +1,6 @@
 <?php
 
-
 namespace Falang\Filter\Site;
-
-
-use Falang\Core\Taxonomy;
 
 class Yoast {
 
@@ -55,6 +51,7 @@ class Yoast {
      * @since 1.3.20 check $data['publisher']
      * @since 1.3.27 add isset on $data['publisher']['@id'] and  $data['potentialAction'][0]['target']
      * @since 1.3.30 php 8 waring fix $data is an array
+     * @update 1.3.65 fix double slug in url
      */
     public function wpseo_schema_url($data){
         if (Falang()->is_default() ) return $data;
@@ -62,12 +59,15 @@ class Yoast {
 
         $home_url=home_url('/');
         $home_default =str_replace('/'.Falang()->current_language->slug,'',$home_url);
-
+        $curr_slug = Falang()->current_language->slug;
         if (isset($data['url'])){
             $data['url']=str_replace($home_default, $home_url,$data['url']);
+            //remove duplicate slug if exist
+            $data['url'] = str_replace('/'.$curr_slug.'/'.$curr_slug.'/','/'.$curr_slug.'/',$data['url']);
         }
         if (isset($data['@id'])){
             $data['@id']=str_replace($home_default, $home_url,$data['@id']);
+            $data['@id'] = str_replace('/'.$curr_slug.'/'.$curr_slug.'/','/'.$curr_slug.'/',$data['@id']);
         }
         //additional replacments because some of them were in internal array. Not all links should be changed thats why it's targeting only selected.
         if ($data['@type']=='Organization'){
@@ -121,6 +121,7 @@ class Yoast {
     /*
      * @update 1.3.57 fix from Stamatios Aronis
      * @update 1.3.64 fix yoast title translation (no variable in the title)
+     * @update 1.3.65 fix yoast title translation (original value was use with separator)
      * */
     private function translate_title($title,$presentation,array $optionNames) {
         if(Falang()->is_default()) return $title;
@@ -154,8 +155,9 @@ class Yoast {
                 }
                 //1.3.64 change due to improvment
                 //nothing to filter use directly the title
-                if (strpos($presentation->title, '%%') !== false) {
-                    $title = wpseo_replace_vars($presentation->title, array("post_title" => $title));
+                //1.3.65 the title to use is the translated
+                if (strpos($title, '%%') !== false) {
+                    $title = wpseo_replace_vars($title, array("post_title" => $title));
                 }
 
             }
@@ -178,6 +180,8 @@ class Yoast {
      * @param string                 $description The description sentence.
      * @param Indexable_Presentation $presentation The presentation of an indexable.
      * @return string The description sentence.
+     *
+     * @update 1.3.65 fix category description (need change in wpml-config.xml from yoast)
      */
     public function translate_description($description, $presentation,$optionNames) {
         if(Falang()->is_default()) return $description;
@@ -186,9 +190,8 @@ class Yoast {
         $language = Falang()->get_current_language();
 
         if ($object_type == 'term'){
-            //$falang_taxo = new \Falang\Core\Taxonomy($object_id,Falang()->get_model());
-            $term=get_term($object_id);
-            $description=term_description($term);
+            //load the descripion set in options (or register by the string )
+            $description = falang__($description);
         } else {
             //post, page, product
             $object_id=$presentation->model->object_id;

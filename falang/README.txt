@@ -5,7 +5,7 @@ Tags: multilingual, translation, translate, bilingual, localization
 Requires at least: 4.7
 Tested up to: 6.8
 Requires PHP: 5.6
-Stable tag: 1.3.64
+Stable tag: 1.3.65
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -109,6 +109,13 @@ Purchased licenses come with 1 year on-site support.
 3. The Language Listing panel
 
 == Changelog ==
+
+* 1.3.65 (2025/08/02)
+* fix _load_textdomain_just_in_time (thanks to Alexandre Froger)
+* fix yoast title translation
+* fix yoast category description (change in wpml-config.xml necessary)
+* fix yoast graph slug write 2 times
+* load custom wpml-config.xml in falang root directory
 
 * 1.3.64 (2025/07/01)
 * fix yoast title translation (no variable in the title)
