@@ -90,6 +90,8 @@ class Falang_Admin extends Falang_Rewrite
      * @update 1.3.49 remove yandex filter
      *                add generic filter for service translation (use first in Elementor)
      * @update 1.3.56 wp_nav_menu_item_custom_fields signature change
+     * @update 1.3.66 add filter for home_url
+     *                remove the load-post.php and load-post-new.php (done in the home_filter)
      * */
     public function load()
     {
@@ -105,6 +107,8 @@ class Falang_Admin extends Falang_Rewrite
         // Setup filters for admin pages
         // Priority 5 to make sure filters are there before customize_register is fired
         add_action('wp_loaded', array($this, 'add_filters'), 5);
+
+        add_filter('home_url', array($this,'translate_home_url'), 10, 4);
 
         //post settings option
         //TODO put this in Ajax Handler
@@ -180,10 +184,6 @@ class Falang_Admin extends Falang_Rewrite
 
         // Adds row meta links to the plugin list table aka Documentation and Faq
         add_filter('plugin_row_meta', array($this, 'plugin_row_meta'), 10, 2);
-
-        // on load post.php
-        add_action('load-post.php', array($this, 'admin_post_page'));
-        add_action('load-post-new.php', array($this, 'admin_post_page'));
 
         //on post meta-box-display add js
         add_action('admin_print_styles-post.php', array($this, 'metabox_post_enqueue_script'));
@@ -714,6 +714,7 @@ class Falang_Admin extends Falang_Rewrite
      * @update 1.3.18 flush permalink if the slug change
      * @update 1.3.35 support serialised array translation
      * @update 1.3.40 flush directly the rules if needed (necessary when page slulg change)
+     * @update 1.3.66 fix object injection in unserialize
      */
     public function save_translation_post()
     {
@@ -753,9 +754,12 @@ class Falang_Admin extends Falang_Rewrite
             $meta_key = Falang_Core::get_prefix($language) . $post_meta;
             if (strlen($field_value) > 0) {
                 if (is_serialized($field_value)){
-                    $field_value = unserialize(stripslashes(trim($field_value)));
+                    // Safe to unserialize // https://heera.it/the-dangers-of-phps-unserialize-and-how-to-stay-safe
+                    if (preg_match('/^[\w:;,.{}()=]+$/', $field_value)) {
+                        $field_value = unserialize(stripslashes(trim($field_value)), ['allowed_classes' => false]);
+                        update_post_meta($post_id, $meta_key, $field_value);
+                    }
                 }
-                update_post_meta($post_id, $meta_key, $field_value);
             } else {
                 delete_post_meta($post_id, $meta_key);
             }
@@ -2522,31 +2526,6 @@ class Falang_Admin extends Falang_Rewrite
     }
 
 
-    /* Posts UI
-	----------------------------------------------- */
-
-    /**
-     * Fire filters on post.php
-     *
-     * Hook for 'load-post.php'
-     *
-     * @from 1.2.3
-     */
-    public function admin_post_page()
-    {
-
-        $current_screen = get_current_screen();
-        $falang_post = new \Falang\Core\Post();
-
-        if ($this->model->get_languages_list() && isset($current_screen->post_type) && $falang_post->is_post_type_translatable($current_screen->post_type)) {
-
-            // allow translate home url
-            add_filter('home_url', array($this, 'translate_home_url'), 10, 4);
-
-        }
-
-    }
-
     /**
      * Translate post slug
      * ex: translate %product-slug% in the permalink for woocommerce
@@ -2715,15 +2694,20 @@ class Falang_Admin extends Falang_Rewrite
     }
 
     /**
-     *    Append language slug to home url
-     *    Filter for 'home_url'
+     *  Append language slug to home url
+     *  Filter for 'home_url'
      *  exist for front too
      *
      * @from 1.0
+     * @update 1.3.66 translate_home_url is now in the wp_load filter to fix the bug when theme editor save with slug
+     *                for default language
+     *                the method for load-post.php and load-post-new.php is removed
      */
     public function translate_home_url($url, $path, $orig_scheme, $blog_id)
     {
         $language = $this->get_current_language();
+        $action = null;
+        $post_id = null;
 
         //manage specific language on post/page
         if (isset($_REQUEST['post'])) {
@@ -2731,6 +2715,12 @@ class Falang_Admin extends Falang_Rewrite
         }
         if (isset($_REQUEST['action'])) {
             $action = $_REQUEST['action'];
+        }
+
+        //only supported action need to rewrite the home url in backend
+        //admin_post_page function and edit theme plugin
+        if (!isset($action) && 'edit' != $action && 'editpost' != $action && 'edit-theme-plugin-file' != $action ){
+            return $url;
         }
 
         if (isset($post_id) && (isset($action)) && ('edit' == $action || 'editpost' == $action)) {

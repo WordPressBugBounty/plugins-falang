@@ -106,12 +106,9 @@ class Falang_Public extends Falang_Rewrite{
      * @update 1.3.59 move the load_strings_translations to init
      * @update 1.3.60 pub back the load_strings_translations to load
      * @update 1.3.61 call set language to allow  WPML ICL_LANGUAGE_CODE and ICL_LANGUAGE_NAME define
+     * @update 1.3.66 remove the fix for theme editor done in class-falang-admin.php (home_url)
 	 */
 	public function load() {
-        //theme_editor don't like falang with home slug - disable falang for theme editor check
-        if (isset($_REQUEST['wp_scrape_key'])){
-            return;
-        }
 
 		if ($this->current_language = $this->get_current_language()) {
 
@@ -164,11 +161,6 @@ class Falang_Public extends Falang_Rewrite{
 			// Filters the widgets according to the current language
 			add_filter( 'widget_display_callback', array( $this, 'widget_display_callback' ), 10, 2 );
 			add_filter( 'sidebars_widgets', array( $this, 'sidebars_widgets' ) );
-
-
-			//TODO check translate the post and the page.
-//			add_filter('the_posts', array($this, 'translate_the_posts'), 10, 2);
-//			add_filter('get_pages', array($this, 'translate_the_pages'), 10, 2);
 
 			$this->add_options_filters();
 

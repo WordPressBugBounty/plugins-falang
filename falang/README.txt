@@ -5,7 +5,7 @@ Tags: multilingual, translation, translate, bilingual, localization
 Requires at least: 4.7
 Tested up to: 6.8
 Requires PHP: 5.6
-Stable tag: 1.3.65
+Stable tag: 1.3.66
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -109,6 +109,11 @@ Purchased licenses come with 1 year on-site support.
 3. The Language Listing panel
 
 == Changelog ==
+
+* 1.3.66 (2025/09/01)
+* fix theme editor save with slug
+* fix bug with permalink since woocommerce 10.0.0
+* fix object injection vulnerability's
 
 * 1.3.65 (2025/08/02)
 * fix _load_textdomain_just_in_time (thanks to Alexandre Froger)
