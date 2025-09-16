@@ -5,7 +5,7 @@ Tags: multilingual, translation, translate, bilingual, localization
 Requires at least: 4.7
 Tested up to: 6.8
 Requires PHP: 5.6
-Stable tag: 1.3.66
+Stable tag: 1.3.67
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -109,6 +109,13 @@ Purchased licenses come with 1 year on-site support.
 3. The Language Listing panel
 
 == Changelog ==
+
+* 1.3.67 (2025/09/16)
+* fix WooCommerce – Dashboard menu active class missing (Alexandre Froger fix)
+* fix CF7 bug with _locale filtring since CF7 6.1.1
+* fix RankMath title translation for archive page
+* fix meta (ACF) translation (regression from 1.3.66 version)
+* fix for woocommerce Checkout link (jurifc)
 
 * 1.3.66 (2025/09/01)
 * fix theme editor save with slug

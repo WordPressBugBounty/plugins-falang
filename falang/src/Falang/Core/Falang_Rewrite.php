@@ -428,6 +428,7 @@ class Falang_Rewrite extends  Falang_Core {
 	 *
 	 * @filter 'rewrite_rules_array'
 	 * @from 1.0
+     * @update 1.3.67 add jurifc fix for woocommerce Checkout link
 	 */
 	public function append_language_slugs($rules) {
 
@@ -449,7 +450,8 @@ class Falang_Rewrite extends  Falang_Core {
 // 			'^wp-json/?$',
 // 			'^wp-json/(.*)?',
 			'^index.php/wp-json/?$',
-			'^index.php/wp-json/(.*)?'
+			'^index.php/wp-json/(.*)?',
+            '^checkout-link$' //jurijc:fix woo 10.1.2
 		);
 
 		foreach ($rules as $key => $rule) {

@@ -15,6 +15,7 @@ class WooCommerce {
      * @update 1.3.44 add filter for widget product list name/title translation
      * @update 1.3.54 add filter for lost password submit redirection woocommerce_get_endpoint_url
      * @update 1.3.62 fix term&condition translation (in the checkout page)
+     * @update 1.3.67 fix WooCommerce – Dashboard menu active class missing (Alexandre Froger fix)
 	 *
 	 */
 	public function __construct( ) {
@@ -50,6 +51,9 @@ class WooCommerce {
         //change wc_term_and_condition
         remove_action('woocommerce_checkout_terms_and_conditions','wc_terms_and_conditions_page_content',30);
         add_action('woocommerce_checkout_terms_and_conditions',array($this,'translate_woocommerce_checkout_terms_and_conditions'),30);
+
+        // Fix the dashboard "My Account" active class:
+        add_filter('woocommerce_account_menu_item_classes', array($this,'translate_woocommerce_account_menu_item_classes'),10,2);
 
     }
 
@@ -254,4 +258,28 @@ class WooCommerce {
             }
 
     }
+
+    /**
+     * Fix the dashboard "My Account" active class:
+     * Setting the current flag on the Dashboard page expects wp->query_vars to be empty or to contain a page key.
+     * The page key is NOT present when Falang is activated.
+     *
+     * @since 1.3.67
+     */
+
+    public function translate_woocommerce_account_menu_item_classes($classes, $endpoint){
+        global $post, $wp;
+
+        if (
+            'dashboard' === $endpoint &&
+            ( isset( $post ) && wc_get_page_id( 'myaccount' ) === (int) $post->ID ) &&
+            ( isset( $wp->query_vars['pagename'] ) && $post->post_name === $wp->query_vars['pagename'] ) &&
+            2 === count( $wp->query_vars )
+        ) {
+            $classes[] = 'is-active';
+        }
+
+        return $classes;
+    }
+
 }

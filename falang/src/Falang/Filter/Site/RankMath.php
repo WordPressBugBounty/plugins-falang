@@ -27,12 +27,22 @@ class RankMath{
 
     }
 
+    /**
+     * translate rankmath title
+     *
+     * @update 1.3.67 fix archive page , still but with attribute page and other taxonomy page
+     *
+     */
     public function rank_math_title($title){
         if (Falang()->is_default() ) return $title;
         global $post;
 
         //home static posts page
         if (is_home()  && !Post::is_simple_page() ){
+            return $title;
+        }
+        //fix archive page , still but with attribute page and other taxonomy page
+        if (is_archive() ){
             return $title;
         }
 

@@ -913,6 +913,7 @@ class Falang_Public extends Falang_Rewrite{
 	 * @filter 'the_posts'
 	 *
 	 * @from 1.0
+     * @update 1.3.67 fix for CF7 (not filtering the posts with the _locale)
 	 */
 	public function posts_where( $where, $query) {
 		global $wpdb;
@@ -922,6 +923,11 @@ class Falang_Public extends Falang_Rewrite{
 //		if ( ! empty( $qv['falang_suppress_locale_query'] ) ) {
 //			return $where;
 //		}
+
+        //CF7 use _locale for the form , Falang don't have to filter this.
+        if ( ! empty( $qv['post_type'] ) && 'wpcf7_contact_form' == $qv['post_type'] ) {
+            return $where;
+        }
 
 		$slug = empty( $qv['lang'] ) ? $slug = $this->current_language->slug : $qv['lang'];
 

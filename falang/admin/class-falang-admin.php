@@ -715,6 +715,7 @@ class Falang_Admin extends Falang_Rewrite
      * @update 1.3.35 support serialised array translation
      * @update 1.3.40 flush directly the rules if needed (necessary when page slulg change)
      * @update 1.3.66 fix object injection in unserialize
+     * @update 1.3.67 fix regression on ACF or meta non serialized save
      */
     public function save_translation_post()
     {
@@ -757,9 +758,10 @@ class Falang_Admin extends Falang_Rewrite
                     // Safe to unserialize // https://heera.it/the-dangers-of-phps-unserialize-and-how-to-stay-safe
                     if (preg_match('/^[\w:;,.{}()=]+$/', $field_value)) {
                         $field_value = unserialize(stripslashes(trim($field_value)), ['allowed_classes' => false]);
-                        update_post_meta($post_id, $meta_key, $field_value);
                     }
                 }
+                //update for standard meta or safe value
+                update_post_meta($post_id, $meta_key, $field_value);
             } else {
                 delete_post_meta($post_id, $meta_key);
             }
