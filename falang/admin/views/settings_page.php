@@ -45,7 +45,7 @@ $falang_options = $falang_model->options;
             'attribute' : 'data-tip',
             'maxWidth' : '250px',
             'fadeIn' : 50,
-            'fadeOut' : 50,
+            'fadeOut' : 3000,
             'delay' : 200
         });
 

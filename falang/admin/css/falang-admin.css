@@ -577,6 +577,10 @@ img.tips {
     border-left-color: #464646;
 }
 
+#tiptip_content a {
+    color: #fff;
+}
+
 /* pages post*/
 .falang_post_status{width: 30px;display: inline-block;font-size: 11px;position: relative}
 .falang_post_status.dashicons:before{position: absolute;right: 0;top:3px;}

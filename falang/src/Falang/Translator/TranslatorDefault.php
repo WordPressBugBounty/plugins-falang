@@ -38,6 +38,23 @@ class TranslatorDefault {
         }
 	}
 
+    /*
+     * get the name of the language by locale
+     * local in wordpress case
+     * use for chatGPT
+     *
+     * @since 1.4.0
+     *
+     * */
+    public function languageCodeToName($locale){
+        $language = Falang()->model->get_language_by_locale($locale);
+        if (isset($language)){
+            return $language->name;
+        } else {
+            return 'English';
+        }
+    }
+
 	public function getDefaultLanguage(){
 		return $this->defaultLanguage;
 	}

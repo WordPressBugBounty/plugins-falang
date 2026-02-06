@@ -160,6 +160,9 @@ if ($falang_model->get_option('enable_service')){
                             <button class="button-secondary button-copy" onclick="copyToTranslation('<?php echo $key;?>','copy');return false;" title="<?php  echo __( 'Copy', 'falang' ) ?>"><i class="icon-copy"></i></button>
                             <!-- add yandex/azure button -->
 		                    <?php if ($falang_model->get_option('enable_service') == '1') { ?>
+                                <?php if ($falang_model->get_option('service_name') == 'chatgpt') { ?>
+                                    <button class="button-secondary button-copy" onclick="copyToTranslation('<?php echo $key;?>','translate');return false;" title="<?php  echo __( 'Translate with ChatGPT', 'falang' ) ?>"><i class="icon-globe"></i></button>
+                                <?php } ?>
                                 <?php if ($falang_model->get_option('service_name') == 'deepl') { ?>
                                     <button class="button-secondary button-copy" onclick="copyToTranslation('<?php echo $key;?>','translate');return false;" title="<?php  echo __( 'Translate with DeepL', 'falang' ) ?>"><i class="icon-globe"></i></button>
                                 <?php } ?>
@@ -249,6 +252,9 @@ if ($falang_model->get_option('enable_service')){
                         <button class="button-secondary button-copy" onclick="copyToTranslation('<?php echo $key;?>','copy');return false;" title="<?php  echo __( 'Copy', 'falang' ) ?>"><i class="icon-copy"></i></button>
                         <!-- add yandex/azure button -->
                         <?php if ($falang_model->get_option('enable_service') == '1') { ?>
+                            <?php if ($falang_model->get_option('service_name') == 'chatgpt') { ?>
+                                <button class="button-secondary button-copy" onclick="copyToTranslation('<?php echo $key;?>','translate');return false;" title="<?php  echo __( 'Translate with ChatGPT', 'falang' ) ?>"><i class="icon-globe"></i></button>
+                            <?php } ?>
                             <?php if ($falang_model->get_option('service_name') == 'deepl') { ?>
                                 <button class="button-secondary button-copy" onclick="copyToTranslation('<?php echo $key;?>','translate');return false;" title="<?php  echo __( 'Translate with DeepL', 'falang' ) ?>"><i class="icon-globe"></i></button>
                             <?php } ?>

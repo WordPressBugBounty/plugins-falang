@@ -53,8 +53,10 @@
         <td>
             <select id="service_name" name="service_name" title="Service" class=" required-entry select">
                 <?php if (Falang()->is_pro()) { ?>
+                    <option value="chatgpt" <?php if ( $falang_model->get_option('service_name') == 'chatgpt' ): ?>selected="selected"<?php endif; ?>><?php echo __('ChatGPT','falang'); ?></option>
                     <option value="deepl" <?php if ( $falang_model->get_option('service_name') == 'deepl' ): ?>selected="selected"<?php endif; ?>><?php echo __('DeepL','falang'); ?></option>
                 <?php } else { ?>
+                    <option value="" disabled ><?php echo __('ChatGPT (Pro only)','falang'); ?></option>
                     <option value="" disabled ><?php echo __('DeepL (Pro only)','falang'); ?></option>
                 <?php } ?>
                 <option value="google" <?php if ( $falang_model->get_option('service_name') == 'google' ): ?>selected="selected"<?php endif; ?>><?php echo __('Google','falang'); ?></option>
@@ -86,6 +88,28 @@
                 </p>
             </td>
         </tr>
+    <!-- ChatGPT (hide on free-->
+    <tr <?php if (Falang()->is_free()){ echo 'style="display:none"';}?>>
+        <th><?php _e('ChatGPT API Key', 'falang'); ?></th>
+        <td>
+            <label>
+                <input type="text" size="40" name="chatgpt_key" value="<?php esc_attr_e($falang_model->get_option('chatgpt_key','')); ?>" />
+                <?php  \Falang\Core\Falang_Core::falang_tooltip('Sign-up at ChatGPT access key to the Translator API service at <a href=\'https://www.chatgpt.com\' target="_blank">ChatGPT.com</a>'); ?>
+            </label>
+        </td>
+    </tr>
+    <tr>
+        <th><?php _e('ChatGPT Model', 'falang'); ?></th>
+        <td>
+            <select id="chatgpt_model" name="chatgpt_model" title="ChatGPT Model" class=" required-entry select">
+                <option value="gpt-5.2" <?php if ( $falang_model->get_option('chatgpt_model') == 'gpt-5.2' ): ?>selected="selected"<?php endif; ?>><?php echo __('GPT-5','falang'); ?></option>
+                <option value="gpt-5-mini" <?php if ( $falang_model->get_option('chatgpt_model') == 'gpt-5-mini' ): ?>selected="selected"<?php endif; ?>><?php echo __('GPT-5 Mini','falang'); ?></option>
+                <option value="gpt-4o" <?php if ( $falang_model->get_option('chatgpt_model') == 'gpt-4o' ): ?>selected="selected"<?php endif; ?>><?php echo __('GPT-4o','falang'); ?></option>
+                <option value="gpt-4.1" <?php if ( $falang_model->get_option('chatgpt_model') == 'gpt-4.1' ): ?>selected="selected"<?php endif; ?>><?php echo __('GPT-4.1','falang'); ?></option>
+                <option value="gpt-4.1-mini" <?php if ( $falang_model->get_option('chatgpt_model') == 'gpt-4.1-mini' ): ?>selected="selected"<?php endif; ?>><?php echo __('GPT-4.1 Mini','falang'); ?></option>
+            </select>
+        </td>
+    </tr>
     <!-- Google -->
     <tr>
         <th><?php _e('Google translate API Key', 'falang'); ?></th>

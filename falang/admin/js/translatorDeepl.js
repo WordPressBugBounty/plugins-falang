@@ -7,7 +7,7 @@ function translateService(fieldName,sourceText){
         service: 'deepl',
         sourceLanguageCode: translator.from,
         targetLanguageLocale: translator.to,
-        text: [sourceText]
+        text: sourceText
     };
 
     jQuery.ajax({
@@ -29,7 +29,9 @@ function translateService(fieldName,sourceText){
             }
         },
         error: function (xhr, textStatus, errorThrown) {
-            translatedText = "ERROR "+xhr.responseJSON["code"]+": "+xhr.responseJSON["message"];
+            const translatedText = "ERROR : " + textStatus;
+            setTranslation(fieldName, translatedText);
+            console.log(errorThrown);
         },
         complete: function() {
             jQuery('body').removeClass('waiting');

@@ -3,9 +3,9 @@ Contributors: sbouey
 Donate link: www.faboba.com/falangw/
 Tags: multilingual, translation, translate, bilingual, localization
 Requires at least: 4.7
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 5.6
-Stable tag: 1.3.67
+Stable tag: 1.4.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -14,11 +14,12 @@ Falang is the easiest multilanguage plugin you can use to translate a WordPress 
 == Description ==
 
 Falang is a multilanguage plugin for WordPress. It allows you to translate an existing WordPress site to other languages. Falang natively supports WooCommerce (product, variation, category, tag, attribute, etc.)
-
+You can use translation services such as Google, Azure, DeepL (Pro), or ChatGPT (Pro) to assist you.
 = Free vs Pro =
 
 Pro version:
 - Enabled popup translation for (menu/post,product...)
+- ChatGPT translation service
 - DeepL translation service
 - Translate/configure WooCommerce email
 - has on-site support and language filtering - [documentation](https://www.faboba.com/en/wordpress/falang-for-wordpress/documentation/134-how-to-use-lang-filtering.html)
@@ -26,6 +27,7 @@ Pro version:
 - YITH WooCommerce Compare
 - WC Product addons
 - CookieYes
+- and more....
 
 = Concept =
 
@@ -90,7 +92,7 @@ _(French version with english subtitles)_
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Add languages
 4. Set the default language (main language of your site)
-5. Add the  Language Switcher to your site
+5. Add the  Language Switcher to your site (by shortcode or menu) [Documentation for language switcher](https://www.faboba.com/en/wordpress/falang-for-wordpress/documentation/119-how-to-configure-language-switcher.html)
 6. Translate your post / pages / menus etc. to the other languages
 
 == Frequently Asked Questions ==
@@ -109,6 +111,15 @@ Purchased licenses come with 1 year on-site support.
 3. The Language Listing panel
 
 == Changelog ==
+
+* 1.4.0 (2026/01/26)
+* add ChatGPT translation service (Pro)
+* improve DeepL translation service (Pro)
+* change tips display link color and fadOut
+* WordPress 6.9 compatible
+
+* 1.3.68 (2025/12/03)
+* fix meta translation with serialised object
 
 * 1.3.67 (2025/09/16)
 * fix WooCommerce – Dashboard menu active class missing (Alexandre Froger fix)

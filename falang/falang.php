@@ -8,7 +8,7 @@
  * Plugin Name:       Falang multilanguage for WordPress
  * Plugin URI:        www.faboba.com/falangw/
  * Description:       Adds multilingual capability to WordPress (Lite version)
- * Version:           1.3.67
+ * Version:           1.4.0
  * Author:            Faboba
  * Author URI:        www.faboba.com
  * License:           GPL-3.0+
@@ -16,7 +16,7 @@
  * Text Domain:       falang
  * Domain Path:       /languages
  *
- * Copyright 2020-2024 Faboba
+ * Copyright 2020-2025 Faboba
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ require_once( dirname( __FILE__ ) . '/vendor/autoload.php' );
 /**
  * Currently plugin version.
  */
-define( 'FALANG_VERSION', '1.3.67' );
+define( 'FALANG_VERSION', '1.4.0' );
 define( 'FALANG_MIN_WP_VERSION', '4.7' );
 define( 'FALANG_FILE', __FILE__ ); // this file
 define( 'FALANG_BASENAME', plugin_basename( FALANG_FILE ) ); // plugin name as known by WP

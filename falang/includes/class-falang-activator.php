@@ -88,6 +88,7 @@ class Falang_Activator {
 	 * @since 1.0
      * @update 1.3.54 add deepl
      * @update 1.3.58 add nav_men_item meta_keys _menu_item_url checked by default
+     * @update 1.4.0 add chatgpt key default gpt-4.1-mini
 	 *
 	 * return array
 	 */
@@ -107,6 +108,8 @@ class Falang_Activator {
 			'need_flush' => 1,
 			'enable_service' => false,
 			'service_name' => '',
+            'chatgpt_key' => '',
+            'chatgpt_model' => 'gpt-4.1-mini',
             'deepl_key' => '',
             'deepl_free' => true,
             'google_key' => '',

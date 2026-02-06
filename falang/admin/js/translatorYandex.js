@@ -5,7 +5,7 @@ function translateService(sourceText){
 		sourceLanguageCode: translator.from,
 		targetLanguageCode: translator.to,
 		format: 'HTML',
-		texts: [sourceText]
+		texts: sourceText
 	};
 
 	jQuery.ajax({

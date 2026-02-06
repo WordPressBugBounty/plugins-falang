@@ -716,6 +716,7 @@ class Falang_Admin extends Falang_Rewrite
      * @update 1.3.40 flush directly the rules if needed (necessary when page slulg change)
      * @update 1.3.66 fix object injection in unserialize
      * @update 1.3.67 fix regression on ACF or meta non serialized save
+     * @update 1.3.68 fix meta translation with serialised object / remove preg_match
      */
     public function save_translation_post()
     {
@@ -754,11 +755,14 @@ class Falang_Admin extends Falang_Rewrite
             $field_value = $this->get_value_from_post($post_meta, '');
             $meta_key = Falang_Core::get_prefix($language) . $post_meta;
             if (strlen($field_value) > 0) {
+                //the $field value need to be stripslades and trim before the is_serialize
+                $field_value = stripslashes(trim($field_value));
                 if (is_serialized($field_value)){
                     // Safe to unserialize // https://heera.it/the-dangers-of-phps-unserialize-and-how-to-stay-safe
-                    if (preg_match('/^[\w:;,.{}()=]+$/', $field_value)) {
-                        $field_value = unserialize(stripslashes(trim($field_value)), ['allowed_classes' => false]);
-                    }
+                    //1.3.68 remove the preg_match was not working on mediaport
+                    //if (preg_match('/^[\w:;,.{}()=]+$/', $field_value)) {
+                        $field_value = unserialize($field_value, ['allowed_classes' => false]);
+                    //}
                 }
                 //update for standard meta or safe value
                 update_post_meta($post_id, $meta_key, $field_value);
@@ -1003,6 +1007,7 @@ class Falang_Admin extends Falang_Rewrite
      * @since 1.3.24 add association // reload option in model after saving
      * @update 1.3.50 fix scss vulnerability's need to sanitize text field (sevice keys and downloadid)
      * @update 1.3.54 add deepl
+     * @update 1.4.0 add chatgpt key and model
      */
     public function save_settings()
     {
@@ -1068,6 +1073,8 @@ class Falang_Admin extends Falang_Rewrite
                 $options['google_key'] = (isset($_POST['google_key']) && $_POST['google_key']) ? sanitize_text_field($_POST['google_key']) : '';
                 $options['deepl_key'] = (isset($_POST['deepl_key']) && $_POST['deepl_key']) ? sanitize_text_field($_POST['deepl_key']) : '';
                 $options['deepl_free'] = (isset($_POST['deepl_free']) && $_POST['deepl_free']) ? true : false;
+                $options['chatgpt_key'] = (isset($_POST['chatgpt_key']) && $_POST['chatgpt_key']) ? sanitize_text_field($_POST['chatgpt_key']) : '';
+                $options['chatgpt_model'] = (isset($_POST['chatgpt_model']) && $_POST['chatgpt_model']) ? sanitize_text_field($_POST['chatgpt_model']) : 'gpt-4o';
 
                 $options['debug_admin'] = (isset($_POST['debug_admin']) && $_POST['debug_admin']) ? $_POST['debug_admin'] : '';
                 $options['delete_trans_on_uninstall'] = (isset($_POST['delete_trans_on_uninstall']) && $_POST['delete_trans_on_uninstall']) ? $_POST['delete_trans_on_uninstall'] : '';
@@ -3081,6 +3088,7 @@ class Falang_Admin extends Falang_Rewrite
 
     /*
      * @from 1.3.49
+     * @update 1.4 : check the post parameter
      *
      * $result sucess true/false
      * $result data translated text (true)
@@ -3088,11 +3096,11 @@ class Falang_Admin extends Falang_Rewrite
      * */
     public function ajax_service_translate() {
 
-        $targetLanguageLocale   = !empty( $_POST['targetLanguageLocale'] ) ? $_POST['targetLanguageLocale'] :'' ;
-        $testToTranslate        = !empty( $_POST['text'] ) ? $_POST['text'] :'' ;
+        $targetLanguageLocale   = !empty( $_POST['targetLanguageLocale'] ) ? sanitize_text_field($_POST['targetLanguageLocale']) :'' ;
+        $testToTranslate        = !empty( $_POST['text'] ) ? wp_kses_post($_POST['text']) :'' ;
 
         $service = TranslatorFactory::getTranslator($targetLanguageLocale);
-        $result = $service->translate($testToTranslate[0],$targetLanguageLocale);
+        $result = $service->translate($testToTranslate,$targetLanguageLocale);
 
         Falang()->return_json($result);
         exit();

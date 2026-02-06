@@ -364,6 +364,9 @@ if (isset($translations['option'][$falang_target_language_locale][$option_name])
                 <!-- add yandex/azure button -->
                 <?php if ( !$multiple) { ?>
 				<?php if ($this->model->get_option('enable_service') == '1') { ?>
+                    <?php if ($this->model->get_option('service_name') == 'chatgpt') { ?>
+                        <button class="button-secondary button-copy" onclick="copyToTranslation('translation','translate');return false;" title="<?php  echo __( 'Translate with ChatGPT', 'falang' ) ?>"><i class="icon-globe"></i></button>
+                    <?php } ?>
                     <?php if ($this->model->get_option('service_name') == 'deepl') { ?>
                         <button class="button-secondary button-copy" onclick="copyToTranslation('translation','translate');return false;" title="<?php  echo __( 'Translate with DeepL', 'falang' ) ?>"><i class="icon-globe"></i></button>
                     <?php } ?>
