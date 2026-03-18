@@ -1877,16 +1877,25 @@ class Falang_Public extends Falang_Rewrite{
      *
      * @from 1.3.7
      * @update 1.3.59 fix the return not used for the falang_hreflang filter
+     * @update 1.4.1 display hreflang only for cpt not set to a specific langauge
      */
     public function print_hreflang() {
+        global $post;
 
         $hreflangs = array();
         $languages = $this->model->get_languages_list();
 
+        //get post language
+        $post_locale = get_post_meta( $post->ID, '_locale', true );
+
         foreach ($languages as $language) {
-            //hreflang code ISO 639-1 en-GB , fr-FR and not like wordpress locale en_GB,fr_FR
-            $lang =  str_replace('_','-',$language->locale);
-            $hreflangs[ $lang ] = $this->get_translated_url($language);
+            //add hreflang only if post not set to specific locale
+            //or it's the locale of the page.
+            if (empty($post_locale) || ($post_locale == $language->locale)){
+                //hreflang code ISO 639-1 en-GB , fr-FR and not like wordpress locale en_GB,fr_FR
+                $lang =  str_replace('_','-',$language->locale);
+                $hreflangs[ $lang ] = $this->get_translated_url($language);
+            }
         }
 
         // Adds the site root url when the default language code is not hidden
