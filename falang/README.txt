@@ -5,7 +5,7 @@ Tags: multilingual, translation, translate, bilingual, localization
 Requires at least: 4.7
 Tested up to: 6.9
 Requires PHP: 5.6
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -111,6 +111,11 @@ Purchased licenses come with 1 year on-site support.
 3. The Language Listing panel
 
 == Changelog ==
+
+* 1.4.2 (2026/05/07)
+* add filter menu item by language (Pro)
+* fix warning display on hreflang (post not set)
+* change flush to soft on post update.
 
 * 1.4.1 (2026/03/18)
 * display hreflang only for cpt not set to a specific langauge

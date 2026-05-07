@@ -717,6 +717,8 @@ class Falang_Admin extends Falang_Rewrite
      * @update 1.3.66 fix object injection in unserialize
      * @update 1.3.67 fix regression on ACF or meta non serialized save
      * @update 1.3.68 fix meta translation with serialised object / remove preg_match
+     * @update 1.4.2 update need flush is done after the flush_rewrite rules
+     *               change flush to soft
      */
     public function save_translation_post()
     {
@@ -771,9 +773,10 @@ class Falang_Admin extends Falang_Rewrite
             }
         }
         //need to flush to be sure if the menu link to page not to have 404
+        //1.4.2 update option after flush
         if ($need_flush) {
+            $this->flush_rewrite_rules(false);
             $this->model->update_option('need_flush', 1);
-            $this->flush_rewrite_rules(true);
         }
 
         //save published status
@@ -2115,15 +2118,17 @@ class Falang_Admin extends Falang_Rewrite
      *
      * @hook 'wp_loaded'
      * @from 1.0
+     *
+     * @update 1.4.2 add hard parameter like in flush_rewrite_rules
      */
-    public function flush_rewrite_rules()
+    public function flush_rewrite_rules($hard = true)
     {
 
         if ($this->model->get_option('need_flush')) {
 
             $this->disable_translate_home_url = true;
 
-            flush_rewrite_rules();
+            flush_rewrite_rules($hard);
 
             $this->disable_translate_home_url = false;
 
@@ -3035,17 +3040,38 @@ class Falang_Admin extends Falang_Rewrite
      *
      * @from 1.3.36
      * @update 1.3.56 use only 2 parameters change def to fix bug before 5.4 with only 4 parameters
+     * @update
      *
      */
     public function wp_nav_menu_item_custom_fields( $item_id, $menu_item ) {
         if (isset($menu_item->post_name) && $menu_item->post_name == 'langues' ){return;}
 
-        $admin_links = new \Falang\Core\Admin_Links();
-        add_thickbox();
-        $output = '<p class="falang-menu">';
-        $output .= '<label>'.esc_html_e( "Menu translation", "falang" ).'</label>';
-        $output .= $admin_links->display_menu_translation_link_row($item_id,true,false,true);
-        $output .= '</p>';
+        //falang pro can set a menu to a specific locale
+        //_menu_item_locale don't seem to work (exdept default language)
+        $current_locales = get_post_meta( $item_id, '_menu_item_locale' ,true);
+        $output = '';
+
+        if (empty($current_locales)){
+            $admin_links = new \Falang\Core\Admin_Links();
+            add_thickbox();
+            $output = '<p class="description falang-menu">';
+            $output .= '<label>'.__( "Menu translation", "falang" ).'</label><br/>';
+            $output .= $admin_links->display_menu_translation_link_row($item_id,true,false,true);
+            $output .= '</p>';
+        }
+
+        if (Falang()->is_free()){
+            $output .= '<p class="description">';
+            $output .= '<label>'.__( "Select Language visibility", "falang" ).'</label><br/>';
+            $output .= '<span>';
+            $output .= __( "Add option to assign a language to menu items (Falang Pro)", "falang" );
+            $output .= '</span>';
+            $output .= '</p>';
+
+        } else {
+            $output = apply_filters('wp_nav_menu_item_by_language',$output,$item_id,$menu_item);
+        }
+
         echo $output;
     }
 

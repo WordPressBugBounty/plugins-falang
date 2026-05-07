@@ -1878,9 +1878,12 @@ class Falang_Public extends Falang_Rewrite{
      * @from 1.3.7
      * @update 1.3.59 fix the return not used for the falang_hreflang filter
      * @update 1.4.1 display hreflang only for cpt not set to a specific langauge
+     * @update 1.4.2 fix hreflang waning global post not set (ex: elementor edit mode/ yootheme)
      */
     public function print_hreflang() {
         global $post;
+
+        if (!isset($post)){return;}
 
         $hreflangs = array();
         $languages = $this->model->get_languages_list();
