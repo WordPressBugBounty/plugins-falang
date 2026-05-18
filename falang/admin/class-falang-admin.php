@@ -945,26 +945,30 @@ class Falang_Admin extends Falang_Rewrite
      * Set option translation for ajax
      *
      * @from 1.5
-     * @since 1.3.7 add update message on option translation
+     * @update 1.3.7 add update message on option translation
+     * @update 1.4.3 fix security (add capability check) , and check ajax
      */
     public function ajax_set_option_translation()
     {
+        check_ajax_referer( 'falang_action', '_nonce' );
 
-        if (isset($_POST['falang_option_translation'])) {
+        if (current_user_can('manage_options')) {
 
-            $option_tree = $this->map_deep($_POST['falang_option_translation'], array($this, 'format_option'));
+            if (isset($_POST['falang_option_translation'])) {
 
-            $this->update_option_translations($option_tree);
+                $option_tree = $this->map_deep($_POST['falang_option_translation'], array($this, 'format_option'));
 
-            $response = new stdClass();
-            $response->success = 'option updated';
-            $response->option = $option_tree;
-            $this->return_json($response);
+                $this->update_option_translations($option_tree);
 
+                $response = new stdClass();
+                $response->success = 'option updated';
+                $response->option = $option_tree;
+                $this->return_json($response);
+
+            }
+            //die
         }
-
         wp_die();
-
     }
 
 

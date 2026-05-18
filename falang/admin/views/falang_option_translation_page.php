@@ -196,7 +196,8 @@ if (isset($translations['option'][$falang_target_language_locale][$option_name])
                 formData: {action: "falang_set_option_translation"},
                 send: function(input) {
                     var data = {
-                        action: "falang_set_option_translation"
+                        action: "falang_set_option_translation",
+                        _nonce: document.getElementById('falang_option_nonce').value
                     };
                     data[input.name] = input.value;
                     var $loadBar = $('<span></span>').addClass("saving").text("...");
