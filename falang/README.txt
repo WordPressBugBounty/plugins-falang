@@ -3,13 +3,13 @@ Contributors: sbouey
 Donate link: www.faboba.com/falangw/
 Tags: multilingual, translation, translate, bilingual, localization
 Requires at least: 4.7
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 5.6
-Stable tag: 1.4.3
+Stable tag: 1.4.4
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Falang is the easiest multilanguage plugin you can use to translate a WordPress site.
+Falang is a WordPress multilingual plugin. Translate sites and WooCommerce content. Supports Google, Azure, DeepL and ChatGPT
 
 == Description ==
 
@@ -111,6 +111,10 @@ Purchased licenses come with 1 year on-site support.
 3. The Language Listing panel
 
 == Changelog ==
+
+* 1.4.4 (2026/06/11)
+* fix chatCPT translation
+* WordPress 7.0 compatible
 
 * 1.4.3 (2026/05/18)
 * security fix

@@ -6,7 +6,6 @@
 if ( ! defined( 'ABSPATH' ) ) {exit;} // Don't access directly
 use Falang\Core\Falang_Core;
 use Falang\Model\Falang_Model;
-use Falang\Translator\TranslatorYandex;
 use Falang\Factory\TranslatorFactory;
 
 $original_post = get_post($falang_original_post_id);
