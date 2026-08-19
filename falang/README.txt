@@ -5,7 +5,7 @@ Tags: multilingual, translation, translate, bilingual, localization
 Requires at least: 4.7
 Tested up to: 7.0
 Requires PHP: 5.6
-Stable tag: 1.4.4
+Stable tag: 1.4.5
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -111,6 +111,11 @@ Purchased licenses come with 1 year on-site support.
 3. The Language Listing panel
 
 == Changelog ==
+
+* 1.4.5 (2026/08/19)
+* Improved Yoast product category translations
+* Added translation support for new Yoast metadata
+* Fixed YOOtheme rewrite rules with invalid language slugs
 
 * 1.4.4 (2026/06/11)
 * fix chatCPT translation

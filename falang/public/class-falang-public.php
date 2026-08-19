@@ -1587,6 +1587,9 @@ class Falang_Public extends Falang_Rewrite{
 	 * Requestion current language
 	 *
 	 * @from 1.0
+     *
+     * @update 1.4.5 return default language when language slug is not valid
+     *               this fix bug with Yootheme route not set correctly
 	 *
 	 * @return object WP_post|false
 	 */
@@ -1594,7 +1597,7 @@ class Falang_Public extends Falang_Rewrite{
 
 		if (isset($_REQUEST[$this->language_query_var])) {
 
-			return $this->model->get_language_by_slug($_REQUEST[$this->language_query_var]);
+            $language = $this->model->get_language_by_slug($_REQUEST[$this->language_query_var]);
 
 		} else if (isset($_SERVER['REQUEST_URI'])) {
 

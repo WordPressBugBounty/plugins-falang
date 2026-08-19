@@ -250,9 +250,10 @@ class Falang_Core {
 
 	/**
 	 * Requestion current language
-	 * TODO check if it's necessary on backend
+     * TODO check if it's necessary on backend
 	 *
 	 * @from 1.0
+     * @update 1.4.5 return default language when the language query var is not a valid slug
 	 *
 	 * @return object Language
 	 */
@@ -260,7 +261,8 @@ class Falang_Core {
 
 		if (isset($_REQUEST[$this->language_query_var])) {
 
-			return $this->model->get_language_by_slug($_REQUEST[$this->language_query_var]);
+            $lang = $this->model->get_language_by_slug($_REQUEST[$this->language_query_var]);
+            return $lang ?? $this->get_default_language();
 
 		}
 

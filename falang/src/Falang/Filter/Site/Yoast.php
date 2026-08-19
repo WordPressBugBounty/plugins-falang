@@ -105,7 +105,7 @@ class Yoast {
 
     public function wpseo_canonical($description,$presentation)
     {
-        return  $this->translate_description($description,$presentation,array('_yoast_wpseo_canonical','_yoast_wpseo_canonical'));
+        return  $this->translate_description($description,$presentation,array('_yoast_wpseo_canonical'));
     }
 
     public function wpseo_metadesc($description, $presentation)
@@ -122,11 +122,35 @@ class Yoast {
      * @update 1.3.57 fix from Stamatios Aronis
      * @update 1.3.64 fix yoast title translation (no variable in the title)
      * @update 1.3.65 fix yoast title translation (original value was use with separator)
+     * @update 1.4.5 translate term meta title (use for woocommerce product categorie)
      * */
     private function translate_title($title,$presentation,array $optionNames) {
         if(Falang()->is_default()) return $title;
         $object_type = $presentation->model->object_type;
         if ($object_type == 'term'){
+            $language = Falang()->get_current_language();
+            $term_id=$presentation->model->object_id;
+            $falang_taxo = new \Falang\Core\Taxonomy();
+            $term = get_term($term_id);
+
+            if ($term){
+                $last_key = $this->array_key_last($optionNames);
+                foreach ($optionNames as $key => $optionName) {
+                    //last key post_title
+                    if ($key == $last_key) {
+                        $title = $falang_taxo->translate_term_meta($term, $optionName,true, $language, null);
+                    } else {
+                        //specific yoast title set
+                        $yoast_wpseo_title = $falang_taxo->translate_term_meta($term, $optionName,true, $language, null);
+                        if (!empty($yoast_wpseo_title)) {
+                            return $yoast_wpseo_title;
+                        }
+                    }
+                }
+            }
+            //allow string translation
+            $title = falang__($title);
+
             //nothing to do the title is already translated.
             //format tested %%term_title%% Archivy %%page%% %%sep%% %%sitename%%
         } else {
@@ -176,12 +200,14 @@ class Yoast {
 
     /**
      * Filters the meta description for stories.
+     * use for canonical too
      *
      * @param string                 $description The description sentence.
      * @param Indexable_Presentation $presentation The presentation of an indexable.
      * @return string The description sentence.
      *
      * @update 1.3.65 fix category description (need change in wpml-config.xml from yoast)
+     * @update 1.4.5 translate term meta description (use for woocommerce product categorie)
      */
     public function translate_description($description, $presentation,$optionNames) {
         if(Falang()->is_default()) return $description;
@@ -190,6 +216,31 @@ class Yoast {
         $language = Falang()->get_current_language();
 
         if ($object_type == 'term'){
+
+            $term_id=$presentation->model->object_id;
+            $falang_taxo = new \Falang\Core\Taxonomy();
+            $term = get_term($term_id);
+
+            if ($term) {
+                $last_key = $this->array_key_last($optionNames);
+                foreach ($optionNames as $key => $optionName) {
+                    //last key post_title
+                    if ($key == $last_key) {
+                        //for canonical if the translation don't exist return the default in : description
+                        if ($optionName == '_yoast_wpseo_canonical'){
+                            $description = $falang_taxo->translate_term_meta($term, $optionName, true, $language, $description);
+                        } else {
+                            $description = $falang_taxo->translate_term_meta($term, $optionName, true, $language,null);
+                        }
+                    } else {
+                        //specific yoast title set
+                        $yoast_wpseo_description = $falang_taxo->translate_term_meta($term, $optionName, true, $language, '');
+                        if (!empty($yoast_wpseo_description)) {
+                            return $yoast_wpseo_description;
+                        }
+                    }
+                }
+            }
             //load the descripion set in options (or register by the string )
             $description = falang__($description);
         } else {
@@ -204,7 +255,12 @@ class Yoast {
                 foreach ($optionNames as $key => $optionName) {
                     //last key post_excerpt
                     if ($key == $last_key) {
-                        $description = $falang_post->translate_post_field($post, 'post_excerpt', $language,'' );
+                        //for canonical if the translation don't exist return the default in : description
+                        if ($optionName == '_yoast_wpseo_canonical') {
+                            $description = $falang_post->translate_post_field($post, 'post_excerpt', $language,$description );
+                        } else {
+                            $description = $falang_post->translate_post_field($post, 'post_excerpt', $language,'' );
+                        }
                         if ( empty($description)){
                             $description = wp_trim_words($falang_post->translate_post_field($post, 'post_content', $language, $description));
                         }
@@ -290,4 +346,27 @@ class Yoast {
         }
         return $links;
     }
+
+//    public function wpseo_saved_indexable($indexable ){
+//        // Seulement les catégories produits
+//        if (
+//            $indexable->object_type !== 'term'
+//            || $indexable->object_sub_type !== 'product_cat'
+//        ) {
+//            return;
+//        }
+//
+//        update_term_meta(
+//            $indexable->object_id,
+//            '_yoast_wpseo_title',
+//            $indexable->title
+//        );
+//
+//        update_term_meta(
+//            $indexable->object_id,
+//            '_yoast_wpseo_desc',
+//            $indexable->description
+//        );
+//
+//    }
 }

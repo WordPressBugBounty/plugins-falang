@@ -2516,6 +2516,8 @@ class Falang_Admin extends Falang_Rewrite
      * Setup filters for admin pages
      *
      * @since 1.2.1
+     * @update 1.4.5 add yoast filter
+     *               Store for term product_cat only for now the old meta in the meta term table
      */
     public function add_filters()
     {
@@ -2540,6 +2542,10 @@ class Falang_Admin extends Falang_Rewrite
             $this->woocommerce = new \Falang\Filter\Admin\WooCommerce();
         }
 
+        //Yoast
+        if ( defined( 'WPSEO_VERSION' ) ){
+            $this->yoast = new \Falang\Filter\Admin\Yoast($this);
+        }
 
     }
 
